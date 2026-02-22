@@ -1,0 +1,7 @@
+{
+  "name": "DelHuerto",
+  "description": "Plataforma digital que conecta directamente a pequeños productores agropecuarios con consumidores locales para fomentar el comercio justo y sostenible.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

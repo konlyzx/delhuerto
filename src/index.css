@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Cormorant Garamond", serif;
+  
+  --color-brand-cream: #fdfbe6;
+  --color-brand-olive: #5A5A40;
+  --color-brand-sage: #c5d6a4;
+  --color-brand-leaf: #4A6741;
+}
+
+body {
+  @apply bg-brand-cream text-stone-900 font-sans;
+}
+
+.sketch-border {
+  border: 2px solid #333;
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+}
+
+.sketch-card {
+  @apply bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)];
+  border: 2.5px solid #333;
+  border-radius: 12px 4px 14px 5px/5px 14px 4px 12px;
+}
+
+.sketch-button {
+  @apply bg-stone-900 text-white px-8 py-3 font-bold text-lg transition-all active:scale-95 hover:shadow-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] cursor-pointer;
+  border: 2.5px solid #333;
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+}
+
+.sketch-button-outline {
+  @apply bg-stone-900 text-white px-8 py-3 font-bold text-lg transition-all active:scale-95 hover:shadow-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] cursor-pointer;
+  border: 2.5px solid #333;
+  border-radius: 15px 255px 15px 225px/225px 15px 255px 15px;
+}
+
+.ods-circle {
+  @apply w-40 h-40 rounded-full border-2 border-stone-800 bg-white flex flex-col items-center justify-center p-4 text-center text-xs font-bold leading-tight shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] transition-transform hover:scale-105;
+}
+
+.section-title {
+  @apply text-4xl md:text-5xl font-serif font-bold text-stone-800 mb-4 relative inline-block;
+}
+
+.section-title::after {
+  content: "";
+  @apply absolute -bottom-2 left-0 w-full h-1 bg-brand-leaf opacity-30;
+  border-radius: 100% 10% 100% 10%;
+}
+
+h1, h2, h3, h4, .serif {
+  @apply font-serif;
+}
+
+.card-organic {
+  @apply bg-white rounded-[32px] shadow-sm border border-stone-200/50 overflow-hidden;
+}
+
+.btn-olive {
+  @apply bg-brand-olive text-white rounded-full px-6 py-2 transition-all hover:bg-brand-olive/90 active:scale-95 disabled:opacity-50;
+}
+
+.btn-outline {
+  @apply border border-brand-olive text-brand-olive rounded-full px-6 py-2 transition-all hover:bg-brand-olive hover:text-white active:scale-95;
+}
