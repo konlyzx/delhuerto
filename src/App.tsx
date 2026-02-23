@@ -26,7 +26,7 @@ import {
   onAuthStateChanged,
   signOut
 } from 'firebase/auth';
-import { doc, setDoc, getDoc, collection, addDoc, getDocs, updateDoc, deleteDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc, collection, addDoc, getDocs, updateDoc, deleteDoc, query, where, orderBy } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { auth, googleProvider, db, storage } from './lib/firebase';
 import { User, Product, CartItem } from './types';
@@ -58,6 +58,13 @@ export default function App() {
   const [orderSuccess, setOrderSuccess] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [userOrders, setUserOrders] = useState<any[]>([]);
+  const [dashboardView, setDashboardView] = useState<'products' | 'profile'>('products');
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+
+  // Profile Form States
+  const [editProfileName, setEditProfileName] = useState('');
+  const [editProfileLocation, setEditProfileLocation] = useState('');
+  const [editProfileDesc, setEditProfileDesc] = useState('');
 
   // Product Form states
   const [showNewProductForm, setShowNewProductForm] = useState(false);
@@ -134,13 +141,20 @@ export default function App() {
 
   useEffect(() => {
     if (view === 'orders' && user) {
-      fetch(`/api/orders/${user.id}`)
-        .then(res => {
-          if (!res.ok) throw new Error("API error");
-          return res.json();
-        })
-        .then(data => setUserOrders(data))
-        .catch(e => console.error("Error fetching orders", e));
+      const fetchOrders = async () => {
+        try {
+          const q = query(collection(db, "orders"), where("consumer_id", "==", user.id), orderBy("created_at", "desc"));
+          const querySnapshot = await getDocs(q);
+          const ordersData = await Promise.all(querySnapshot.docs.map(async (doc) => {
+            const data = doc.data();
+            return { id: doc.id, ...data };
+          }));
+          setUserOrders(ordersData);
+        } catch (e) {
+          console.error("Error fetching orders", e);
+        }
+      };
+      fetchOrders();
     }
   }, [view, user]);
 
@@ -203,24 +217,21 @@ export default function App() {
     };
   }, []);
 
-  const fetchProducts = async () => {
-    let data: Product[] = [];
-    try {
-      const res = await fetch('/api/products');
-      if (res.ok) {
-        data = await res.json();
-      }
-    } catch (e) {
-      console.error("Local API failed:", e);
+  useEffect(() => {
+    if (user) {
+      setEditProfileName(user.name || '');
+      setEditProfileLocation(user.location || '');
+      setEditProfileDesc(user.description || '');
     }
+  }, [user]);
 
+  const fetchProducts = async () => {
     try {
       const querySnapshot = await getDocs(collection(db, "products"));
       const fbProducts = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as unknown as Product);
-      setProducts([...data, ...fbProducts]);
+      setProducts(fbProducts);
     } catch (fbErr) {
       console.warn("Could not fetch firebase products", fbErr);
-      setProducts(data);
     }
   };
 
@@ -301,7 +312,7 @@ export default function App() {
     }
   };
 
-  const handleToggleActive = async (productId: number, currentStatus: boolean | undefined) => {
+  const handleToggleActive = async (productId: string | number, currentStatus: boolean | undefined) => {
     try {
       const productRef = doc(db, 'products', productId.toString());
       await updateDoc(productRef, { isActive: !(currentStatus ?? true) });
@@ -311,7 +322,7 @@ export default function App() {
     }
   };
 
-  const handleDeleteProduct = async (productId: number) => {
+  const handleDeleteProduct = async (productId: string | number) => {
     if (!window.confirm("¿Seguro que deseas eliminar definitivamente este producto?")) return;
     try {
       await deleteDoc(doc(db, 'products', productId.toString()));
@@ -325,27 +336,69 @@ export default function App() {
     e.preventDefault();
     if (!user) return;
 
-    const newProduct = {
-      producer_id: user.id,
-      producer_name: user.name,
-      producer_location: user.location,
-      name: npName,
-      price: parseFloat(npPrice),
-      stock: parseInt(npStock),
-      unit: npUnit,
-      category: npCategory,
-      description: npDesc,
-      isActive: true,
-      image_url: npImage || `https://picsum.photos/seed/${Date.now()}/600/600`
-    };
-
     try {
-      await addDoc(collection(db, 'products'), newProduct);
+      if (editingProduct) {
+        const productRef = doc(db, 'products', editingProduct.id.toString());
+        await updateDoc(productRef, {
+          name: npName,
+          price: parseFloat(npPrice),
+          stock: parseInt(npStock),
+          unit: npUnit,
+          category: npCategory,
+          description: npDesc,
+          image_url: npImage
+        });
+        setEditingProduct(null);
+      } else {
+        const newProduct = {
+          producer_id: user.id,
+          producer_name: user.name,
+          producer_location: user.location,
+          name: npName,
+          price: parseFloat(npPrice),
+          stock: parseInt(npStock),
+          unit: npUnit,
+          category: npCategory,
+          description: npDesc,
+          isActive: true,
+          image_url: npImage || `https://picsum.photos/seed/${Date.now()}/600/600`
+        };
+        await addDoc(collection(db, 'products'), newProduct);
+      }
       setShowNewProductForm(false);
       setNpName(''); setNpPrice(''); setNpStock(''); setNpDesc(''); setNpImage('');
       fetchProducts(); // Refresh list
     } catch (e: any) {
       alert("Error al guardar en Firebase: " + e.message);
+    }
+  };
+
+  const handleEditProductClick = (p: Product) => {
+    setEditingProduct(p);
+    setNpName(p.name);
+    setNpPrice(p.price.toString());
+    setNpStock(p.stock.toString());
+    setNpCategory(p.category || 'Verduras');
+    setNpUnit(p.unit);
+    setNpDesc(p.description || '');
+    setNpImage(p.image_url || '');
+    setDashboardView('products');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleUpdateProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) return;
+    try {
+      await updateDoc(doc(db, 'users', user.id.toString()), {
+        name: editProfileName,
+        location: editProfileLocation,
+        description: editProfileDesc
+      });
+      setUser({ ...user, name: editProfileName, location: editProfileLocation, description: editProfileDesc });
+      alert("Perfil actualizado correctamente");
+    } catch (error: any) {
+      alert("Error al actualizar perfil: " + error.message);
     }
   };
 
@@ -421,21 +474,29 @@ export default function App() {
       setView('login');
       return;
     }
-    const res = await fetch('/api/orders', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    try {
+      const orderRef = await addDoc(collection(db, "orders"), {
         consumer_id: user.id,
         items: cart,
-        total: cartTotal
-      })
-    });
-    if (res.ok) {
+        total: cartTotal,
+        status: 'pending',
+        created_at: new Date().toISOString()
+      });
+      // Updating stock
+      const promises = cart.map(item => {
+        const productRef = doc(db, 'products', item.id.toString());
+        return updateDoc(productRef, { stock: Math.max(0, item.stock - item.quantity) });
+      });
+      await Promise.all(promises);
+
       setCart([]);
       setIsCartOpen(false);
       setOrderSuccess(true);
       fetchProducts();
       setTimeout(() => setOrderSuccess(false), 5000);
+    } catch (e) {
+      console.error("Error order", e);
+      alert("Hubo un error al procesar tu pedido");
     }
   };
 
@@ -1111,14 +1172,14 @@ export default function App() {
             </div>
 
             <nav className="sketch-card p-4 space-y-2">
-              <button className="w-full flex items-center gap-3 px-4 py-3 bg-brand-sage border-2 border-stone-800 rounded-xl font-bold text-stone-800 transition-colors">
+              <button onClick={() => setDashboardView('products')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-colors ${dashboardView === 'products' ? 'bg-brand-sage border-2 border-stone-800 text-stone-800' : 'text-stone-600 hover:bg-stone-50 hover:text-stone-800'}`}>
                 <Package size={20} /> Mis Productos
               </button>
               <button className="w-full flex items-center gap-3 px-4 py-3 text-stone-600 hover:bg-stone-50 hover:text-stone-800 rounded-xl font-bold transition-colors">
                 <Store size={20} /> Pedidos
                 <span className="ml-auto bg-stone-200 text-stone-600 px-2 py-0.5 rounded-full text-xs">Próximamente</span>
               </button>
-              <button className="w-full flex items-center gap-3 px-4 py-3 text-stone-600 hover:bg-stone-50 hover:text-stone-800 rounded-xl font-bold transition-colors">
+              <button onClick={() => setDashboardView('profile')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-colors ${dashboardView === 'profile' ? 'bg-brand-sage border-2 border-stone-800 text-stone-800' : 'text-stone-600 hover:bg-stone-50 hover:text-stone-800'}`}>
                 <MapPin size={20} /> Editar Perfil
               </button>
             </nav>
@@ -1135,141 +1196,178 @@ export default function App() {
 
           {/* Dashboard Content */}
           <section className="w-full md:w-3/4 space-y-8">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white sketch-card p-8">
-              <div>
-                <h2 className="text-3xl font-serif font-bold">Gestión de Inventario</h2>
-                <p className="text-stone-500 mt-1">Administra tus alimentos frescos a la venta.</p>
-              </div>
-              <button disabled className="sketch-button flex items-center gap-2 px-6 opacity-50 cursor-not-allowed hidden md:flex">
-                <Plus size={20} /> Nuevo Producto
-              </button>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="sketch-card bg-amber-50 p-6 flex flex-col border-dashed">
-                <span className="text-stone-500 font-bold uppercase tracking-widest text-xs mb-2">Total Productos</span>
-                <span className="text-4xl font-serif font-bold text-stone-800">{producerProducts.length}</span>
-              </div>
-              <div className="sketch-card bg-green-50 p-6 flex flex-col border-dashed border-green-800">
-                <span className="text-green-800 font-bold uppercase tracking-widest text-xs mb-2">Unidades en Venta</span>
-                <span className="text-4xl font-serif font-bold text-green-900">{totalStock}</span>
-              </div>
-            </div>
-
-            <form onSubmit={handleCreateProduct} className="sketch-card bg-white p-8 space-y-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-2xl font-bold font-serif text-stone-800">Detalles del Producto</h3>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-stone-500 uppercase tracking-widest">Nombre del Alimento</label>
-                  <div className="flex gap-2">
-                    <input required value={npName} onChange={e => setNpName(e.target.value)} type="text" className="flex-grow px-4 py-3 bg-stone-50 border-2 border-stone-200 focus:border-stone-800 outline-none w-full" placeholder="Ej. Tomates Cherry" />
-                    <button type="button" onClick={handleFetchProductInfo} disabled={isSearchingImage || !npName} className="px-4 py-3 bg-brand-leaf text-white border-2 border-stone-800 font-bold hover:bg-green-700 transition-colors disabled:opacity-50 whitespace-nowrap outline-none flex items-center gap-2 sketch-button !py-2">
-                      {isSearchingImage ? 'Buscando...' : 'Info Auto.'}
-                    </button>
+            {dashboardView === 'profile' && (
+              <form onSubmit={handleUpdateProfile} className="sketch-card bg-white p-8 space-y-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-2xl font-bold font-serif text-stone-800">Perfil de la Huerta</h3>
+                </div>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-stone-500 uppercase tracking-widest">Nombre del Negocio o Granja</label>
+                    <input required value={editProfileName} onChange={e => setEditProfileName(e.target.value)} type="text" className="w-full px-4 py-3 bg-stone-50 border-2 border-stone-200 focus:border-stone-800 outline-none" placeholder="Huerta La Esperanza" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-stone-500 uppercase tracking-widest">Ubicación</label>
+                    <input required value={editProfileLocation} onChange={e => setEditProfileLocation(e.target.value)} type="text" className="w-full px-4 py-3 bg-stone-50 border-2 border-stone-200 focus:border-stone-800 outline-none" placeholder="Bogotá, Localidad de Usme" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-stone-500 uppercase tracking-widest">Historia o Descripción</label>
+                    <textarea required value={editProfileDesc} onChange={e => setEditProfileDesc(e.target.value)} className="w-full h-32 px-4 py-3 bg-stone-50 border-2 border-stone-200 focus:border-stone-800 outline-none resize-none" placeholder="Llevamos 3 generaciones cultivando sin químicos..."></textarea>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-stone-500 uppercase tracking-widest">Categoría</label>
-                  <select value={npCategory} onChange={e => setNpCategory(e.target.value)} className="w-full px-4 py-3 bg-stone-50 border-2 border-stone-200 focus:border-stone-800 outline-none">
-                    {categories.filter(c => c !== 'Todos').map(c => <option key={c} value={c}>{c}</option>)}
-                  </select>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-stone-500 uppercase tracking-widest">Precio</label>
-                  <input required value={npPrice} onChange={e => setNpPrice(e.target.value)} type="number" step="0.01" className="w-full px-4 py-3 bg-stone-50 border-2 border-stone-200 focus:border-stone-800 outline-none" placeholder="0.00" />
-                </div>
-                <div className="flex gap-4">
-                  <div className="w-2/3 space-y-2">
-                    <label className="text-xs font-bold text-stone-500 uppercase tracking-widest">Stock Disponible</label>
-                    <input required value={npStock} onChange={e => setNpStock(e.target.value)} type="number" className="w-full px-4 py-3 bg-stone-50 border-2 border-stone-200 focus:border-stone-800 outline-none" placeholder="10" />
-                  </div>
-                  <div className="w-1/3 space-y-2">
-                    <label className="text-xs font-bold text-stone-500 uppercase tracking-widest">Unidad</label>
-                    <select value={npUnit} onChange={e => setNpUnit(e.target.value)} className="w-full px-4 py-3 bg-stone-50 border-2 border-stone-200 focus:border-stone-800 outline-none">
-                      <option value="kg">kg</option>
-                      <option value="unidades">uds</option>
-                      <option value="latas">latas</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
+                <button type="submit" className="sketch-button w-full py-4 !text-lg bg-stone-900 text-white border-2 border-stone-800 hover:bg-stone-800">
+                  Guardar Cambios
+                </button>
+              </form>
+            )}
 
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-stone-500 uppercase tracking-widest">Imagen (Sube una foto o busca Info Auto.)</label>
-                <div className="flex gap-4 items-center">
-                  <div className="w-16 h-16 rounded-xl overflow-hidden sketch-border shrink-0 bg-stone-100 relative">
-                    {isUploadingImage ? (
-                      <span className="absolute inset-0 flex items-center justify-center text-[10px] text-stone-400 font-bold bg-white text-center leading-none p-1">CARGANDO...</span>
-                    ) : npImage ? (
-                      <img src={npImage} alt="Preview" className="w-full h-full object-cover" />
-                    ) : (
-                      <span className="absolute inset-0 flex items-center justify-center text-[10px] text-stone-400 font-bold">VACÍO</span>
+            {dashboardView === 'products' && (
+              <>
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white sketch-card p-8">
+                  <div>
+                    <h2 className="text-3xl font-serif font-bold">Gestión de Inventario</h2>
+                    <p className="text-stone-500 mt-1">Administra tus alimentos frescos a la venta.</p>
+                  </div>
+                  <button disabled className="sketch-button flex items-center gap-2 px-6 opacity-30 cursor-not-allowed hidden md:flex">
+                    <Plus size={20} /> Nuevo Producto
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="sketch-card bg-amber-50 p-6 flex flex-col border-dashed">
+                    <span className="text-stone-500 font-bold uppercase tracking-widest text-xs mb-2">Total Productos</span>
+                    <span className="text-4xl font-serif font-bold text-stone-800">{producerProducts.length}</span>
+                  </div>
+                  <div className="sketch-card bg-green-50 p-6 flex flex-col border-dashed border-green-800">
+                    <span className="text-green-800 font-bold uppercase tracking-widest text-xs mb-2">Unidades en Venta</span>
+                    <span className="text-4xl font-serif font-bold text-green-900">{totalStock}</span>
+                  </div>
+                </div>
+
+                <form onSubmit={handleCreateProduct} className="sketch-card bg-white p-8 space-y-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-2xl font-bold font-serif text-stone-800">{editingProduct ? 'Editar Producto' : 'Detalles del Producto'}</h3>
+                    {editingProduct && (
+                      <button type="button" onClick={() => { setEditingProduct(null); setNpName(''); setNpPrice(''); setNpStock(''); setNpDesc(''); setNpImage(''); }} className="text-stone-500 hover:text-stone-800 font-bold text-sm underline">
+                        Cancelar Edición
+                      </button>
                     )}
                   </div>
-                  <div className="flex-grow space-y-2">
-                    <input value={npImage} onChange={e => setNpImage(e.target.value)} type="text" className="w-full px-4 py-3 bg-stone-50 border-2 border-stone-200 focus:border-stone-800 outline-none text-sm" placeholder="URL de imagen" />
-                    <label className="sketch-button flex items-center justify-center gap-2 cursor-pointer !py-2 !text-sm w-full bg-stone-100 hover:bg-stone-200">
-                      <Upload size={16} /> Subir desde tu equipo
-                      <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
-                    </label>
-                  </div>
-                </div>
-              </div>
 
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-stone-500 uppercase tracking-widest">Descripción</label>
-                <textarea required value={npDesc} onChange={e => setNpDesc(e.target.value)} className="w-full h-32 px-4 py-3 bg-stone-50 border-2 border-stone-200 focus:border-stone-800 outline-none resize-none" placeholder="Describe cómo cultivaste o preparaste este producto..."></textarea>
-              </div>
-
-              <button type="submit" className="sketch-button w-full py-4 !text-lg bg-stone-900 text-white border-2 border-stone-800 hover:bg-stone-800">
-                Publicar en el Catálogo
-              </button>
-            </form>
-
-            {producerProducts.length > 0 && (
-              <div className="space-y-4 pt-4">
-                <h3 className="text-xl font-bold font-serif text-stone-800 mb-6">Tus Productos (Catálogo Actual)</h3>
-                {producerProducts.map(p => (
-                  <div key={p.id} className={`sketch-card p-4 flex flex-col md:flex-row items-center gap-6 hover:-translate-y-1 transition-transform relative ${p.isActive === false ? 'bg-stone-50 opacity-60' : 'bg-white'}`}>
-                    <div className="w-24 h-24 shrink-0 bg-stone-100 sketch-border overflow-hidden rounded-xl">
-                      <img src={p.image_url || `https://picsum.photos/seed/${p.id}/200/200`} alt={p.name} className={`w-full h-full object-cover ${p.isActive === false ? 'grayscale' : ''}`} />
-                    </div>
-                    <div className="flex-grow space-y-1 text-center md:text-left">
-                      <div className="flex items-center gap-2 justify-center md:justify-start">
-                        <h4 className="font-bold text-xl text-stone-800">{p.name}</h4>
-                        {p.isActive === false && <span className="bg-red-100 text-red-800 text-[10px] uppercase font-bold px-2 py-0.5 rounded">Archivado / Oculto</span>}
-                      </div>
-                      <p className="text-stone-500 text-sm line-clamp-1">{p.description}</p>
-                      <span className="inline-block mt-2 text-[10px] font-bold text-stone-400 uppercase tracking-widest bg-stone-100 px-2 py-1 rounded">{p.category}</span>
-                    </div>
-
-                    <div className="flex flex-col gap-2 shrink-0 md:min-w-[140px] border-t-2 md:border-t-0 md:border-l-2 border-dashed border-stone-200 pt-4 md:pt-0 md:pl-6 w-full md:w-auto">
-                      <div className="flex flex-row justify-between md:flex-col md:items-end w-full">
-                        <div className="text-left md:text-right">
-                          <span className="block text-[10px] font-bold text-stone-400 uppercase tracking-widest">Precio</span>
-                          <span className="text-2xl font-bold text-brand-leaf">${p.price.toFixed(2)}</span>
-                        </div>
-                        <div className="text-right md:text-right">
-                          <span className="block text-[10px] font-bold text-stone-400 uppercase tracking-widest">Stock</span>
-                          <span className="text-lg font-bold text-stone-800">{p.stock} <span className="text-sm font-normal text-stone-500">{p.unit}</span></span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2 justify-end mt-2 md:mt-4 pt-2 border-t border-stone-100 md:border-t-0 md:pt-0">
-                        <button onClick={(e) => { e.stopPropagation(); handleToggleActive(p.id, p.isActive); }} title={p.isActive === false ? "Restaurar al catálogo" : "Archivar producto"} className={`p-2 rounded transition-colors ${p.isActive === false ? 'text-amber-500 bg-amber-50' : 'text-stone-400 hover:text-amber-500 hover:bg-amber-50'}`}>
-                          {p.isActive === false ? <ArchiveRestore size={18} /> : <Archive size={18} />}
-                        </button>
-                        <button onClick={(e) => { e.stopPropagation(); handleDeleteProduct(p.id); }} title="Eliminar definitivamente" className="p-2 text-stone-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors">
-                          <Trash2 size={18} />
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-stone-500 uppercase tracking-widest">Nombre del Alimento</label>
+                      <div className="flex gap-2">
+                        <input required value={npName} onChange={e => setNpName(e.target.value)} type="text" className="flex-grow px-4 py-3 bg-stone-50 border-2 border-stone-200 focus:border-stone-800 outline-none w-full" placeholder="Ej. Tomates Cherry" />
+                        <button type="button" onClick={handleFetchProductInfo} disabled={isSearchingImage || !npName} className="px-4 py-3 bg-brand-leaf text-white border-2 border-stone-800 font-bold hover:bg-green-700 transition-colors disabled:opacity-50 whitespace-nowrap outline-none flex items-center gap-2 sketch-button !py-2">
+                          {isSearchingImage ? 'Buscando...' : 'Info Auto.'}
                         </button>
                       </div>
                     </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-stone-500 uppercase tracking-widest">Categoría</label>
+                      <select value={npCategory} onChange={e => setNpCategory(e.target.value)} className="w-full px-4 py-3 bg-stone-50 border-2 border-stone-200 focus:border-stone-800 outline-none">
+                        {categories.filter(c => c !== 'Todos').map(c => <option key={c} value={c}>{c}</option>)}
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-stone-500 uppercase tracking-widest">Precio</label>
+                      <input required value={npPrice} onChange={e => setNpPrice(e.target.value)} type="number" step="0.01" className="w-full px-4 py-3 bg-stone-50 border-2 border-stone-200 focus:border-stone-800 outline-none" placeholder="0.00" />
+                    </div>
+                    <div className="flex gap-4">
+                      <div className="w-2/3 space-y-2">
+                        <label className="text-xs font-bold text-stone-500 uppercase tracking-widest">Stock Disponible</label>
+                        <input required value={npStock} onChange={e => setNpStock(e.target.value)} type="number" className="w-full px-4 py-3 bg-stone-50 border-2 border-stone-200 focus:border-stone-800 outline-none" placeholder="10" />
+                      </div>
+                      <div className="w-1/3 space-y-2">
+                        <label className="text-xs font-bold text-stone-500 uppercase tracking-widest">Unidad</label>
+                        <select value={npUnit} onChange={e => setNpUnit(e.target.value)} className="w-full px-4 py-3 bg-stone-50 border-2 border-stone-200 focus:border-stone-800 outline-none">
+                          <option value="kg">kg</option>
+                          <option value="unidades">uds</option>
+                          <option value="latas">latas</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
-                ))}
-              </div>
+
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-stone-500 uppercase tracking-widest">Imagen (Sube una foto o busca Info Auto.)</label>
+                    <div className="flex gap-4 items-center">
+                      <div className="w-16 h-16 rounded-xl overflow-hidden sketch-border shrink-0 bg-stone-100 relative">
+                        {isUploadingImage ? (
+                          <span className="absolute inset-0 flex items-center justify-center text-[10px] text-stone-400 font-bold bg-white text-center leading-none p-1">CARGANDO...</span>
+                        ) : npImage ? (
+                          <img src={npImage} alt="Preview" className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="absolute inset-0 flex items-center justify-center text-[10px] text-stone-400 font-bold">VACÍO</span>
+                        )}
+                      </div>
+                      <div className="flex-grow space-y-2">
+                        <input value={npImage} onChange={e => setNpImage(e.target.value)} type="text" className="w-full px-4 py-3 bg-stone-50 border-2 border-stone-200 focus:border-stone-800 outline-none text-sm" placeholder="URL de imagen" />
+                        <label className="sketch-button flex items-center justify-center gap-2 cursor-pointer !py-2 !text-sm w-full bg-stone-100 hover:bg-stone-200">
+                          <Upload size={16} /> Subir desde tu equipo
+                          <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-stone-500 uppercase tracking-widest">Descripción</label>
+                    <textarea required value={npDesc} onChange={e => setNpDesc(e.target.value)} className="w-full h-32 px-4 py-3 bg-stone-50 border-2 border-stone-200 focus:border-stone-800 outline-none resize-none" placeholder="Describe cómo cultivaste o preparaste este producto..."></textarea>
+                  </div>
+
+                  <button type="submit" className="sketch-button w-full py-4 !text-lg bg-stone-900 text-white border-2 border-stone-800 hover:bg-stone-800">
+                    {editingProduct ? 'Actualizar Producto' : 'Publicar en el Catálogo'}
+                  </button>
+                </form>
+
+                {producerProducts.length > 0 && (
+                  <div className="space-y-4 pt-4">
+                    <h3 className="text-xl font-bold font-serif text-stone-800 mb-6">Tus Productos (Catálogo Actual)</h3>
+                    {producerProducts.map(p => (
+                      <div key={p.id} className={`sketch-card p-4 flex flex-col md:flex-row items-center gap-6 hover:-translate-y-1 transition-transform relative ${p.isActive === false ? 'bg-stone-50 opacity-60' : 'bg-white'}`}>
+                        <div className="w-24 h-24 shrink-0 bg-stone-100 sketch-border overflow-hidden rounded-xl">
+                          <img src={p.image_url || `https://picsum.photos/seed/${p.id}/200/200`} alt={p.name} className={`w-full h-full object-cover ${p.isActive === false ? 'grayscale' : ''}`} />
+                        </div>
+                        <div className="flex-grow space-y-1 text-center md:text-left">
+                          <div className="flex items-center gap-2 justify-center md:justify-start">
+                            <h4 className="font-bold text-xl text-stone-800">{p.name}</h4>
+                            {p.isActive === false && <span className="bg-red-100 text-red-800 text-[10px] uppercase font-bold px-2 py-0.5 rounded">Archivado / Oculto</span>}
+                          </div>
+                          <p className="text-stone-500 text-sm line-clamp-1">{p.description}</p>
+                          <span className="inline-block mt-2 text-[10px] font-bold text-stone-400 uppercase tracking-widest bg-stone-100 px-2 py-1 rounded">{p.category}</span>
+                        </div>
+
+                        <div className="flex flex-col gap-2 shrink-0 md:min-w-[140px] border-t-2 md:border-t-0 md:border-l-2 border-dashed border-stone-200 pt-4 md:pt-0 md:pl-6 w-full md:w-auto">
+                          <div className="flex flex-row justify-between md:flex-col md:items-end w-full">
+                            <div className="text-left md:text-right">
+                              <span className="block text-[10px] font-bold text-stone-400 uppercase tracking-widest">Precio</span>
+                              <span className="text-2xl font-bold text-brand-leaf">${p.price.toFixed(2)}</span>
+                            </div>
+                            <div className="text-right md:text-right">
+                              <span className="block text-[10px] font-bold text-stone-400 uppercase tracking-widest">Stock</span>
+                              <span className="text-lg font-bold text-stone-800">{p.stock} <span className="text-sm font-normal text-stone-500">{p.unit}</span></span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2 justify-end mt-2 md:mt-4 pt-2 border-t border-stone-100 md:border-t-0 md:pt-0">
+                            <button onClick={(e) => { e.stopPropagation(); handleEditProductClick(p); }} title="Editar producto" className="p-2 text-stone-400 hover:text-blue-500 hover:bg-blue-50 rounded transition-colors uppercase text-[10px] font-bold tracking-widest flex flex-col items-center">
+                              <Package size={18} /> Edit
+                            </button>
+                            <button onClick={(e) => { e.stopPropagation(); handleToggleActive(p.id as number, p.isActive); }} title={p.isActive === false ? "Restaurar al catálogo" : "Archivar producto"} className={`p-2 rounded transition-colors ${p.isActive === false ? 'text-amber-500 bg-amber-50' : 'text-stone-400 hover:text-amber-500 hover:bg-amber-50'}`}>
+                              {p.isActive === false ? <ArchiveRestore size={18} /> : <Archive size={18} />}
+                            </button>
+                            <button onClick={(e) => { e.stopPropagation(); handleDeleteProduct(p.id as number); }} title="Eliminar definitivamente" className="p-2 text-stone-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors">
+                              <Trash2 size={18} />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
             )}
           </section>
         </main>
