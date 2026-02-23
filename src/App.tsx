@@ -135,7 +135,10 @@ export default function App() {
   useEffect(() => {
     if (view === 'orders' && user) {
       fetch(`/api/orders/${user.id}`)
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) throw new Error("API error");
+          return res.json();
+        })
         .then(data => setUserOrders(data))
         .catch(e => console.error("Error fetching orders", e));
     }
@@ -201,20 +204,23 @@ export default function App() {
   }, []);
 
   const fetchProducts = async () => {
+    let data: Product[] = [];
     try {
       const res = await fetch('/api/products');
-      const data = await res.json();
-
-      try {
-        const querySnapshot = await getDocs(collection(db, "products"));
-        const fbProducts = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as unknown as Product);
-        setProducts([...data, ...fbProducts]);
-      } catch (fbErr) {
-        console.warn("Could not fetch firebase products", fbErr);
-        setProducts(data);
+      if (res.ok) {
+        data = await res.json();
       }
     } catch (e) {
-      console.error(e);
+      console.error("Local API failed:", e);
+    }
+
+    try {
+      const querySnapshot = await getDocs(collection(db, "products"));
+      const fbProducts = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as unknown as Product);
+      setProducts([...data, ...fbProducts]);
+    } catch (fbErr) {
+      console.warn("Could not fetch firebase products", fbErr);
+      setProducts(data);
     }
   };
 
