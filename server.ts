@@ -24,7 +24,7 @@ db.exec(`
 
   CREATE TABLE IF NOT EXISTS products (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    producer_id INTEGER NOT NULL,
+    producer_id TEXT NOT NULL,
     name TEXT NOT NULL,
     description TEXT,
     price REAL NOT NULL,
@@ -37,7 +37,7 @@ db.exec(`
 
   CREATE TABLE IF NOT EXISTS orders (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    consumer_id INTEGER NOT NULL,
+    consumer_id TEXT NOT NULL,
     total REAL NOT NULL,
     status TEXT DEFAULT 'pending',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -71,12 +71,6 @@ async function startServer() {
   const PORT = 3000;
 
   app.use(express.json());
-
-  // Add COOP header to allow Firebase popups to communicate back
-  app.use((req, res, next) => {
-    res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
-    next();
-  });
 
   // Auth Endpoints (Simplified for MVP)
   app.post("/api/auth/register", (req, res) => {
@@ -142,6 +136,25 @@ async function startServer() {
   });
 
   // Orders
+  app.get("/api/orders/:consumer_id", (req, res) => {
+    try {
+      const orders = db.prepare("SELECT * FROM orders WHERE consumer_id = ? ORDER BY created_at DESC").all(req.params.consumer_id);
+
+      const ordersWithItems = orders.map((order: any) => {
+        const items = db.prepare(`
+          SELECT oi.*, p.name 
+          FROM order_items oi 
+          JOIN products p ON oi.product_id = p.id 
+          WHERE oi.order_id = ?
+        `).all(order.id);
+        return { ...order, items };
+      });
+      res.json(ordersWithItems);
+    } catch (e) {
+      res.status(500).json({ error: "Failed to fetch orders" });
+    }
+  });
+
   app.post("/api/orders", (req, res) => {
     const { consumer_id, items, total } = req.body;
     const transaction = db.transaction(() => {
@@ -149,19 +162,20 @@ async function startServer() {
       const orderId = info.lastInsertRowid;
       const insertItem = db.prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
       const updateStock = db.prepare("UPDATE products SET stock = stock - ? WHERE id = ?");
-      
+
       for (const item of items) {
         insertItem.run(orderId, item.id, item.quantity, item.price);
         updateStock.run(item.quantity, item.id);
       }
       return orderId;
     });
-    
+
     try {
       const orderId = transaction();
       res.json({ id: orderId });
-    } catch (e) {
-      res.status(400).json({ error: "Order failed" });
+    } catch (e: any) {
+      console.error("Failed to insert order:", e);
+      res.status(400).json({ error: "Order failed", details: e.message });
     }
   });
 
