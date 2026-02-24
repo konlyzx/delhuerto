@@ -238,8 +238,18 @@ export default function App() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, authEmail, authPassword);
-      setView('market');
+      const cred = await signInWithEmailAndPassword(auth, authEmail, authPassword);
+      try {
+        const docSnap = await getDoc(doc(db, 'users', cred.user.uid));
+        if (docSnap.exists()) {
+          setView(docSnap.data().role === 'producer' ? 'dashboard' : 'market');
+        } else {
+          setView('onboarding');
+        }
+      } catch (err) {
+        const localRole = localStorage.getItem(`role_${cred.user.uid}`);
+        setView(localRole === 'producer' ? 'dashboard' : 'market');
+      }
     } catch (error: any) {
       alert('Error al entrar: ' + error.message);
     }
@@ -254,15 +264,16 @@ export default function App() {
         if (!userDoc.exists()) {
           setView('onboarding');
         } else {
-          setView('market');
+          setView(userDoc.data().role === 'producer' ? 'dashboard' : 'market');
         }
       } catch (fbErr) {
         console.error("Firebase read blocked, utilizing local fallback");
         const isNewUser = result.user.metadata.creationTime === result.user.metadata.lastSignInTime;
-        if (isNewUser) {
-          setView('onboarding');
+        const localRole = localStorage.getItem(`role_${result.user.uid}`);
+        if (localRole) {
+          setView(localRole === 'producer' ? 'dashboard' : 'market');
         } else {
-          setView('market');
+          setView(isNewUser ? 'onboarding' : 'market');
         }
       }
     } catch (error: any) {
