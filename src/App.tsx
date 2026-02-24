@@ -85,7 +85,6 @@ export default function App() {
   const [authEmail, setAuthEmail] = useState('');
   const [authPassword, setAuthPassword] = useState('');
   const [authName, setAuthName] = useState('');
-  const [authRole, setAuthRole] = useState<'producer' | 'consumer'>('consumer');
 
   // URL Routing & Route Guard hook
   useEffect(() => {
@@ -247,7 +246,7 @@ export default function App() {
         if (docSnap.exists()) {
           setView(docSnap.data().role === 'producer' ? 'dashboard' : 'market');
         } else {
-          setView('onboarding');
+          setView('market');
         }
       } catch (err) {
         const localRole = localStorage.getItem(`role_${cred.user.uid}`);
@@ -265,19 +264,21 @@ export default function App() {
       try {
         const userDoc = await getDoc(userRef);
         if (!userDoc.exists()) {
-          setView('onboarding');
+          const newUserData = {
+            name: result.user.displayName || result.user.email?.split('@')[0] || 'Usuario',
+            email: result.user.email || '',
+            role: 'consumer',
+            location: 'Bogotá'
+          };
+          await setDoc(userRef, newUserData);
+          setView('market');
         } else {
           setView(userDoc.data().role === 'producer' ? 'dashboard' : 'market');
         }
       } catch (fbErr) {
         console.error("Firebase read blocked, utilizing local fallback");
-        const isNewUser = result.user.metadata.creationTime === result.user.metadata.lastSignInTime;
         const localRole = localStorage.getItem(`role_${result.user.uid}`);
-        if (localRole) {
-          setView(localRole === 'producer' ? 'dashboard' : 'market');
-        } else {
-          setView(isNewUser ? 'onboarding' : 'market');
-        }
+        setView(localRole === 'producer' ? 'dashboard' : 'market');
       }
     } catch (error: any) {
       alert('Error con Google: ' + error.message);
@@ -424,7 +425,7 @@ export default function App() {
       const newUserData = {
         name: authName || authEmail.split('@')[0],
         email: authEmail,
-        role: authRole,
+        role: 'consumer',
         location: 'Bogotá'
       };
 
@@ -435,7 +436,7 @@ export default function App() {
         ...newUserData
       } as User);
 
-      setView(authRole === 'producer' ? 'dashboard' : 'market');
+      setView('market');
     } catch (error: any) {
       alert('Error al registrarse: ' + error.message);
     }
@@ -447,6 +448,18 @@ export default function App() {
       setView('landing');
     } catch (error: any) {
       console.error('Error logging out', error);
+    }
+  };
+
+  const handleUpgradeRole = async () => {
+    if (!user) return;
+    try {
+      await updateDoc(doc(db, 'users', user.id.toString()), { role: 'producer' });
+      setUser({ ...user, role: 'producer' });
+      setView('dashboard');
+      alert('¡Felicidades! Ahora tienes tu huerto habilitado.');
+    } catch (e: any) {
+      alert('Error al actualizar rol: ' + e.message);
     }
   };
 
@@ -625,7 +638,7 @@ export default function App() {
                       <span className="relative z-10">Empezar a comprar</span>
                       <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform"></div>
                     </button>
-                    <button onClick={() => { setAuthRole('producer'); setView('register'); }} className="sketch-button-outline relative overflow-hidden group">
+                    <button onClick={() => { setView('register'); }} className="sketch-button-outline relative overflow-hidden group">
                       <span className="relative z-10">Soy productor</span>
                       <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform"></div>
                     </button>
@@ -802,7 +815,7 @@ export default function App() {
                 <p className="text-lg text-stone-400 max-w-md">Llega a más clientes, gestiona tus pedidos fácilmente o empieza a alimentarte mejor hoy. Nuestra red te está esperando.</p>
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
                   <button onClick={() => setView('market')} className="sketch-button bg-brand-leaf border-brand-leaf text-stone-900 hover:bg-white transition-colors">Ver el Mercado</button>
-                  <button onClick={() => { setAuthRole('producer'); setView('register'); }} className="sketch-button-outline !text-white !border-white hover:!bg-white hover:!text-stone-900 transition-colors">Quiero Vender</button>
+                  <button onClick={() => { setView('register'); }} className="sketch-button-outline !text-white !border-white hover:!bg-white hover:!text-stone-900 transition-colors">Ver Catálogo</button>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4 relative">
@@ -966,19 +979,7 @@ export default function App() {
                     placeholder="••••••••"
                   />
                 </div>
-                {view === 'register' && (
-                  <div>
-                    <label className="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-1">Rol Inicial</label>
-                    <select
-                      value={authRole}
-                      onChange={e => setAuthRole(e.target.value as 'producer' | 'consumer')}
-                      className="w-full px-4 py-3 bg-stone-50 border-2 border-stone-200 focus:border-stone-800 focus:bg-white rounded-none outline-none transition-colors appearance-none cursor-pointer"
-                    >
-                      <option value="consumer">Quiero Comprar (Consumidor)</option>
-                      <option value="producer">Quiero Vender (Productor)</option>
-                    </select>
-                  </div>
-                )}
+
                 <button type="submit" className="w-full sketch-button py-3.5 text-lg mt-2">
                   {view === 'login' ? 'Entrar' : 'Registrar'}
                 </button>
@@ -1016,95 +1017,7 @@ export default function App() {
       );
     }
 
-    if (view === 'onboarding') {
-      return (
-        <div className="min-h-screen flex items-center justify-center bg-brand-cream p-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-3xl bg-white sketch-border p-10 md:p-14 text-center shadow-[12px_12px_0px_0px_rgba(41,37,36,1)]"
-          >
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-stone-800 mb-4">¿Cómo participarás hoy?</h2>
-            <p className="text-stone-500 mb-12 max-w-lg mx-auto text-lg">Para ofrecerte la mejor experiencia en DelHuerto, dinos qué rol prefieres tomar en nuestra comunidad.</p>
-            <div className="grid md:grid-cols-2 gap-8">
-              <button
-                onClick={async () => {
-                  if (auth.currentUser) {
-                    const uid = auth.currentUser.uid;
-                    const name = auth.currentUser.displayName || auth.currentUser.email?.split('@')[0] || 'Usuario';
-                    const email = auth.currentUser.email || '';
-                    try {
-                      const userRef = doc(db, 'users', uid);
-                      await setDoc(userRef, {
-                        name,
-                        email,
-                        role: 'consumer',
-                        location: 'Bogotá'
-                      });
-                      const ud = await getDoc(userRef);
-                      if (ud.exists()) {
-                        setUser({ id: uid, ...ud.data() } as User);
-                      }
-                    } catch (fbErr) {
-                      console.warn("Firestore write permissions denied, falling back to local state");
-                      localStorage.setItem(`role_${uid}`, 'consumer');
-                      setUser({ id: uid, name, email, role: 'consumer', location: 'Bogotá' } as User);
-                    }
-                    setView('market');
-                  }
-                }}
-                className="relative sketch-border bg-brand-sage/10 flex flex-col items-center justify-center p-10 gap-6 hover:-translate-y-2 hover:bg-brand-sage/20 transition-all group"
-              >
-                <div className="w-24 h-24 bg-white sketch-border rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <ShoppingBasket size={48} className="text-brand-leaf" />
-                </div>
-                <div>
-                  <h3 className="text-3xl font-bold text-stone-800 mb-2">Quiero Comprar</h3>
-                  <p className="text-stone-500">Busco alimentos frescos, locales y de origen 100% conocido.</p>
-                </div>
-              </button>
 
-              <button
-                onClick={async () => {
-                  if (auth.currentUser) {
-                    const uid = auth.currentUser.uid;
-                    const name = auth.currentUser.displayName || auth.currentUser.email?.split('@')[0] || 'Usuario';
-                    const email = auth.currentUser.email || '';
-                    try {
-                      const userRef = doc(db, 'users', uid);
-                      await setDoc(userRef, {
-                        name,
-                        email,
-                        role: 'producer',
-                        location: 'Bogotá'
-                      });
-                      const ud = await getDoc(userRef);
-                      if (ud.exists()) {
-                        setUser({ id: uid, ...ud.data() } as User);
-                      }
-                    } catch (fbErr) {
-                      console.warn("Firestore write permissions denied, falling back to local state");
-                      localStorage.setItem(`role_${uid}`, 'producer');
-                      setUser({ id: uid, name, email, role: 'producer', location: 'Bogotá' } as User);
-                    }
-                    setView('dashboard');
-                  }
-                }}
-                className="relative sketch-border bg-amber-50 flex flex-col items-center justify-center p-10 gap-6 hover:-translate-y-2 hover:bg-amber-100 transition-all group"
-              >
-                <div className="w-24 h-24 bg-white sketch-border rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Store size={48} className="text-amber-500" />
-                </div>
-                <div>
-                  <h3 className="text-3xl font-bold text-stone-800 mb-2">Quiero Vender</h3>
-                  <p className="text-stone-500">Soy agricultor o productor y quiero conectar con mis clientes.</p>
-                </div>
-              </button>
-            </div>
-          </motion.div >
-        </div >
-      );
-    }
 
     if (view === 'orders') {
       if (!user || user.role !== 'consumer') {

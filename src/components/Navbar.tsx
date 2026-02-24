@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingBasket, ShoppingCart, LogOut } from 'lucide-react';
+import { ShoppingBasket, ShoppingCart, LogOut, Store } from 'lucide-react';
 import { User } from '../types';
 
 interface NavbarProps {
@@ -10,11 +10,12 @@ interface NavbarProps {
     onMenuClick: () => void;
     setView: (v: any) => void;
     scrolled: boolean;
+    onUpgradeRole?: () => void;
 }
 
 import logoImg from '../assets/images/logo.png';
 
-export const Navbar = ({ user, onLogout, cartCount, onOpenCart, onMenuClick, setView, scrolled }: NavbarProps) => (
+export const Navbar = ({ user, onLogout, cartCount, onOpenCart, onMenuClick, setView, scrolled, onUpgradeRole }: NavbarProps) => (
     <nav
         className={`sticky top-0 z-50 mx-auto backdrop-blur-xl border-stone-800/20 px-6 transition-all duration-300 ease-out origin-top ${scrolled
             ? "w-[85%] translate-y-4 rounded-full bg-brand-cream/85 shadow-[0_20px_40px_rgba(0,0,0,0.1)] py-2 border-b-2"
@@ -49,12 +50,18 @@ export const Navbar = ({ user, onLogout, cartCount, onOpenCart, onMenuClick, set
                             Mi Huerto (Panel)
                             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-leaf transition-all group-hover:w-full"></span>
                         </button>
-                    ) : (
-                        <button onClick={() => setView('orders')} className="cursor-pointer hover:text-brand-leaf transition-colors relative group">
-                            Mis Pedidos
-                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-leaf transition-all group-hover:w-full"></span>
-                        </button>
-                    )}
+                    ) : user ? (
+                        <>
+                            <button onClick={() => setView('orders')} className="cursor-pointer hover:text-brand-leaf transition-colors relative group">
+                                Mis Pedidos
+                                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-leaf transition-all group-hover:w-full"></span>
+                            </button>
+                            <button onClick={onUpgradeRole} className="cursor-pointer text-brand-leaf font-bold hover:text-green-700 transition-colors relative group flex items-center gap-1">
+                                <Store size={16} /> Tener mi Huerto
+                                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-leaf transition-all group-hover:w-full"></span>
+                            </button>
+                        </>
+                    ) : null}
                 </div>
             </div>
 
