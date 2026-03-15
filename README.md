@@ -1,5 +1,5 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://delhuerto.vercel.app/assets/delhuerto-dM2jVQP6.gif" />
+<img width="1200" height="475" alt="GHBanner" src="[https://delhuerto.vercel.app/assets/delhuerto-dM2jVQP6.gif](https://delhuerto.vercel.app/assets/delhuerto-dM2jVQP6.gif)" />
 </div>
 
 # Run and deploy your AI Studio app
