@@ -1,4 +1,4 @@
-# DelHuerto
+# <a href="https://github.com/konlyzx/delhuerto/tree/main">DelHuerto</a>
 
 <p align="center">
   <img src="src/assets/images/delhuerto.gif" alt="DelHuerto Banner" width="100%" />
@@ -79,7 +79,7 @@ graph TD
 
 ## 📧 Contacto
 - **Email**: [hola@delhuerto.com](mailto:hola@delhuerto.com)
-- **Ubicación**: Bogotá, Colombia 🇨🇴
+- **Ubicación**: Cali, Colombia 🇨🇴
 
 ---
-<p align="center">Hecho con ❤️ por la comunidad de DelHuerto</p>
+<p align="center">Hecho por <a href="https://github.com/konlyzx/delhuerto">DelHuerto</a></p>
