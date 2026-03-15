@@ -1,7 +1,7 @@
 
 
 <p align="center">
-  <img src="src/assets/images/logo.png" alt="DelHuerto Banner" width="50%" height="auto"/>
+  <img src="src/assets/images/logo.png" alt="DelHuerto Banner" width="400px"/>
 </p>
 
 <h2 align="center">Del campo a tu mesa</h2>
@@ -67,7 +67,7 @@ graph TD
 
 ## 📸 Preview Visual
 <p align="center">
-  <img src="src/assets/images/delhuerto.gif" alt="DelHuerto Logo Preview" width="400" />
+  <img src="src/assets/images/delhuerto.gif" alt="DelHuerto Logo Preview" width="100%" />
 </p>
 
 ## 🗺️ Roadmap
