@@ -1,105 +1,85 @@
+
+
 <p align="center">
-  <img src="https://pub-8e4f80fda01d48079fcf4471ddcf627f.r2.dev/delhuerto.gif" width="100%">
+  <img src="src/assets/images/delhuerto.gif" alt="DelHuerto Banner" width="100%" />
 </p>
 
-<h1 align="center">🌱 DelHuerto</h1>
+<h2 align="center">Del campo a tu mesa</h2>
 
 <p align="center">
-
-<img src="https://readme-typing-svg.herokuapp.com?font=Inter&weight=600&size=24&pause=1000&color=3FA34D&center=true&vCenter=true&width=600&lines=Del+campo+a+tu+mesa;Conectando+productores+locales;Alimentos+frescos+y+sostenibles">
-
-</p>
-
-<p align="center">
-
-![Stars](https://img.shields.io/github/stars/TUUSUARIO/delhuerto?style=social)
-![Forks](https://img.shields.io/github/forks/TUUSUARIO/delhuerto?style=social)
-![Issues](https://img.shields.io/github/issues/TUUSUARIO/delhuerto)
-![License](https://img.shields.io/github/license/TUUSUARIO/delhuerto)
-![Deploy](https://img.shields.io/badge/deploy-vercel-black?logo=vercel)
-
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=2D5A27&center=true&vCenter=true&width=435&lines=Conectando+productores+locales;Alimentos+frescos+y+sostenibles;Del+campo+a+tu+mesa" alt="Typing SVG" />
 </p>
 
 ---
 
-# 🌍 Demo
+## 🚀 Demo
+Explora la plataforma en vivo aquí: [https://delhuerto.vercel.app/](https://delhuerto.vercel.app/)
 
-🌐 **Sitio web**
+## 🌿 Sobre el Proyecto
+**DelHuerto** es una plataforma web diseñada para cerrar la brecha entre los **pequeños productores agrícolas** y los **consumidores conscientes**. En un mundo dominado por largas cadenas de suministro, DelHuerto devuelve el poder a lo local, permitiendo que alimentos frescos y sostenibles lleguen directamente desde la tierra a tu hogar, sin intermediarios innecesarios.
 
-https://delhuerto.vercel.app/
+Nuestro propósito es:
+- **Fortalecer el comercio local** y la economía campesina.
+- **Garantizar soberanía alimentaria** mediante el acceso directo a productos de temporada.
+- **Reducir la huella de carbono** al minimizar los traslados logísticos.
 
----
+## 🛠️ Cómo Funciona
+Transformar tu alimentación y apoyar al campo es tan simple como 1, 2, 3:
 
-# 🥕 Sobre el proyecto
+| Paso | Acción | Descripción |
+| :--- | :--- | :--- |
+| **01** | 🔍 **Explora** | Descubre productos frescos cultivados cerca de ti por manos locales. |
+| **02** | 🛒 **Pide** | Añade lo que necesites a tu carrito y confirma tu pedido directamente. |
+| **03** | 📦 **Recibe** | Coordina la entrega y paga directamente al productor al recibir tus productos. |
 
-**DelHuerto** es una plataforma digital que conecta **productores agrícolas locales** con personas que buscan alimentos frescos, saludables y sostenibles.
+## 📊 Impacto Real
+Estamos comprometidos con los Objetivos de Desarrollo Sostenible (ODS).
 
-El objetivo es eliminar intermediarios y fortalecer la economía local.
+| Métrica | Logro |
+| :--- | :--- |
+| 👨‍🌾 **Productores Locales** | +120 |
+| 🥦 **Alimentos Frescos** | +3K |
+| 👨‍👩‍👧‍👦 **Familias Felices** | +500 |
+| 🌍 **Reducción de Emisiones** | 30% |
 
-Beneficios:
-
-- 🧑‍🌾 pago justo a productores  
-- 🥬 alimentos frescos del campo  
-- 🌎 menor impacto ambiental  
-- 🤝 comercio local más fuerte  
-
----
-
-# 🚜 Cómo funciona
-
-### 1️⃣ Explora
-Encuentra productos cultivados cerca de ti.
-
-### 2️⃣ Pide
-Agrega los productos al carrito y confirma tu pedido.
-
-### 3️⃣ Recibe
-Coordina la entrega directamente con el productor.
-
----
-
-# 📊 Impacto
-
-| Métrica | Valor |
-|------|------|
-| 👩‍🌾 Productores | +120 |
-| 🥬 Productos | +3K |
-| 👨‍👩‍👧 Familias | +500 |
-| 🌎 Emisiones reducidas | 30% |
-
----
-
-# 🧑‍💻 Tecnologías
+## 💻 Tecnologías Utilizadas
+Construido con un stack moderno para máxima velocidad y escalabilidad.
 
 | Tecnología | Uso |
-|------|------|
-| React | Frontend |
-| Vite | Build Tool |
-| Node.js | Backend |
-| Tailwind | UI |
-| Vercel | Deploy |
+| :--- | :--- |
+| **React 19** | Biblioteca principal para la interfaz de usuario. |
+| **Vite** | Herramienta de construcción y servidor de desarrollo ultra rápido. |
+| **Node.js** | Entorno de ejecución para el servidor y herramientas. |
+| **Tailwind CSS** | Framework de estilos para un diseño artesanal y responsive. |
+| **Firebase** | Backend as a Service para autenticación y base de datos. |
+| **Vercel** | Hosting y despliegue continuo (CI/CD). |
 
----
-
-#📸 Preview
-
-<p align="center"> <img src="https://delhuerto.vercel.app/assets/logo-B2-qFVFg.png" width="500"> </p>
-
----
-
-📈 Estadísticas del proyecto
-
-<p align="center"> <img src="https://github-readme-stats.vercel.app/api/pin/?username=TUUSUARIO&repo=delhuerto&theme=tokyonight"> </p>
-
----
-# 🏗️ Arquitectura del proyecto
-
+## 🏗️ Arquitectura del Sistema
 ```mermaid
 graph TD
+    A[Usuario / Consumidor] -->|Navega| B[Frontend React + Vite]
+    B -->|Consulta Datos| C[API Firebase / Firestore]
+    C -->|Persistencia| D[(Base de Datos)]
+    E[Productores] -->|Gestionan Inventario| B
+    B -->|Genera| F[Pedidos Directos]
+    F -->|Logística Local| G[Entregas del campo a la mesa]
+```
 
-Usuario --> Frontend
-Frontend --> API
-API --> BaseDeDatos
-API --> Productores
-Productores --> Entregas
+## 📸 Preview Visual
+<p align="center">
+  <img src="public/assets/images/logo.png" alt="DelHuerto Logo Preview" width="400" />
+</p>
 
+## 🗺️ Roadmap
+- [ ] **Autenticación Avanzada**: Perfiles detallados para cada finca.
+- [ ] **Marketplace Completo**: Filtros por categorías, fincas y cercanía.
+- [ ] **Pagos Digitales**: Integración con pasarelas de pago locales.
+- [ ] **App Móvil**: Versión nativa para productores en el campo.
+- [ ] **Panel de Administración**: Analíticas de ventas e impacto para el productor.
+
+## 📧 Contacto
+- **Email**: [hola@delhuerto.com](mailto:hola@delhuerto.com)
+- **Ubicación**: Cali, Colombia 🇨🇴
+
+---
+<p align="center">Hecho por DelHuerto</p>
