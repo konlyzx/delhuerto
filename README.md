@@ -67,7 +67,7 @@ graph TD
 
 ## 📸 Preview Visual
 <p align="center">
-  <img src="public/assets/images/logo.png" alt="DelHuerto Logo Preview" width="400" />
+  <img src="src/assets/images/logo.png" alt="DelHuerto Logo Preview" width="400" />
 </p>
 
 ## 🗺️ Roadmap
