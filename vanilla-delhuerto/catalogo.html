@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <title>DelHuerto - Catálogo</title>
+    <link rel="stylesheet" href="./css/tokens.css" />
+    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/layout.css" />
+    <link rel="stylesheet" href="./css/components.css" />
+    <link rel="stylesheet" href="./css/pages/landing.css" />
+    <link rel="stylesheet" href="./css/pages/catalog.css" />
+    <script defer src="./js/main.js"></script>
+  </head>
+  <body>
+    <header class="nav" data-nav>
+      <div class="container nav__inner">
+        <a class="nav__brand" href="./">
+          <img class="nav__logo" src="./assets/images/logo.png" alt="DelHuerto" />
+        </a>
+        <nav class="nav__links" aria-label="Navegación principal">
+          <a href="./">Inicio</a>
+          <a href="./catalogo.html" aria-current="page">Catálogo</a>
+          <a href="./registro.html">Registrarse</a>
+        </nav>
+        <div class="nav__right">
+          <button class="icon-btn" type="button" data-open-cart aria-label="Abrir carrito">
+            <span class="sr-only">Abrir carrito</span>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="21" r="1"></circle>
+              <circle cx="19" cy="21" r="1"></circle>
+              <path d="M2.05 2.05h2l2.66 12.38a2 2 0 0 0 2 1.62h9.72a2 2 0 0 0 2-1.62L23 6H6"></path>
+            </svg>
+          </button>
+          <span class="badge" aria-label="2 productos en el carrito">2</span>
+          <a class="btn btn-outline" href="./login.html">Entrar</a>
+          <a class="btn btn-primary" href="./registro.html">Unirse</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="section--tight">
+      <div class="container section">
+        <div class="row-between">
+          <div class="stack" style="gap: 8px;">
+            <h1 class="section-title">Catálogo</h1>
+            <p class="muted" style="margin: 0;">Explora productos frescos, orgánicos y de temporada.</p>
+          </div>
+          <a class="btn btn-outline" href="./mis-pedidos.html">Mis pedidos</a>
+        </div>
+
+        <div class="spacer"></div>
+
+        <div class="catalog-layout">
+          <aside class="sketch-card catalog-aside">
+            <h2 style="margin: 0 0 10px; font-size: 18px;">Filtros</h2>
+            <div class="stack">
+              <label class="tag" for="q">Buscar</label>
+              <input id="q" type="text" placeholder="Buscar..." class="sketch-border" style="padding: 12px 14px; border-radius: 12px;" />
+              <div class="spacer"></div>
+              <div class="tag">Categorías</div>
+              <div class="stack" style="gap: 10px;">
+                <button class="btn btn-primary" type="button" data-category="Todos" style="justify-content: flex-start;">Todos</button>
+                <button class="btn btn-outline" type="button" data-category="Verduras" style="justify-content: flex-start;">Verduras</button>
+                <button class="btn btn-outline" type="button" data-category="Frutas" style="justify-content: flex-start;">Frutas</button>
+                <button class="btn btn-outline" type="button" data-category="Granos" style="justify-content: flex-start;">Granos</button>
+                <button class="btn btn-outline" type="button" data-category="Otros" style="justify-content: flex-start;">Otros</button>
+              </div>
+              <div class="spacer"></div>
+              <div class="tag">Productores cerca</div>
+              <div class="sketch-border" style="height: 180px; border-radius: 16px; background: var(--stone-100); position: relative; overflow: hidden;">
+                <div style="position:absolute; inset:0; opacity:0.22; display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:repeat(4,1fr);">
+                  <div style="border:1px solid var(--stone-300)"></div><div style="border:1px solid var(--stone-300)"></div><div style="border:1px solid var(--stone-300)"></div><div style="border:1px solid var(--stone-300)"></div>
+                  <div style="border:1px solid var(--stone-300)"></div><div style="border:1px solid var(--stone-300)"></div><div style="border:1px solid var(--stone-300)"></div><div style="border:1px solid var(--stone-300)"></div>
+                  <div style="border:1px solid var(--stone-300)"></div><div style="border:1px solid var(--stone-300)"></div><div style="border:1px solid var(--stone-300)"></div><div style="border:1px solid var(--stone-300)"></div>
+                  <div style="border:1px solid var(--stone-300)"></div><div style="border:1px solid var(--stone-300)"></div><div style="border:1px solid var(--stone-300)"></div><div style="border:1px solid var(--stone-300)"></div>
+                </div>
+                <div style="position:absolute; left:32%; top:30%; width:14px; height:14px; border-radius:99px; background:#ef4444; border:2px solid var(--stone-800)"></div>
+                <div style="position:absolute; left:62%; top:54%; width:14px; height:14px; border-radius:99px; background:#f97316; border:2px solid var(--stone-800)"></div>
+              </div>
+            </div>
+          </aside>
+
+          <section>
+            <div class="row-between" style="margin-bottom: 14px;">
+              <strong class="muted" data-result-count>0 productos encontrados</strong>
+              <div class="row" style="gap: 10px;">
+                <span class="tag">Ordenar</span>
+                <select class="sketch-border" data-sort style="padding: 10px 12px; border-radius: 12px;">
+                  <option>Más recientes</option>
+                  <option>Precio: menor a mayor</option>
+                  <option>Precio: mayor a menor</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="catalog-products" data-catalog-list></div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__bottom">
+          <span>© 2026 DelHuerto. Todos los derechos reservados.</span>
+          <div class="row" style="gap: 14px;">
+            <a href="#">Privacidad</a>
+            <a href="#">Términos</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <aside class="cart" data-cart aria-hidden="true">
+      <div class="cart__backdrop" data-close-cart></div>
+      <div class="cart__panel" role="dialog" aria-label="Carrito de compras" aria-modal="true">
+        <div class="cart__header">
+          <strong style="font-size: 20px;">Carrito</strong>
+          <button class="icon-btn" type="button" data-close-cart aria-label="Cerrar carrito">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18"></path><path d="m6 6 12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="cart__body">
+          <div class="cart__item">
+            <div>
+              <strong>Tomates Cherry</strong><br />
+              <span class="muted">$12.00 x 1</span>
+            </div>
+            <strong>$12.00</strong>
+          </div>
+          <div class="cart__item">
+            <div>
+              <strong>Papa Criolla</strong><br />
+              <span class="muted">$7.50 x 2</span>
+            </div>
+            <strong>$15.00</strong>
+          </div>
+        </div>
+        <div class="cart__footer">
+          <div class="row-between" style="margin-bottom: 12px;">
+            <strong>Total</strong>
+            <strong style="font-size: 20px;">$27.00</strong>
+          </div>
+          <a class="btn btn-primary" href="./mis-pedidos.html" style="width: 100%;">Confirmar Pedido</a>
+        </div>
+      </div>
+    </aside>
+  </body>
+</html>

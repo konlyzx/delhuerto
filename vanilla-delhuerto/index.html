@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <title>DelHuerto - Del campo a tu mesa</title>
+    <link rel="stylesheet" href="./css/tokens.css" />
+    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/layout.css" />
+    <link rel="stylesheet" href="./css/components.css" />
+    <link rel="stylesheet" href="./css/pages/landing.css" />
+    <script defer src="./js/main.js"></script>
+  </head>
+  <body>
+    <header class="nav" data-nav>
+      <div class="container nav__inner">
+        <a class="nav__brand" href="./">
+          <img class="nav__logo" src="./assets/images/logo.png" alt="DelHuerto" />
+        </a>
+
+        <nav class="nav__links" aria-label="Navegación principal">
+          <a href="./">Inicio</a>
+          <a href="./catalogo.html">Catálogo</a>
+          <a href="./registro.html">Registrarse</a>
+        </nav>
+
+        <div class="nav__right">
+          <button class="icon-btn" type="button" data-open-cart aria-label="Abrir carrito">
+            <span class="sr-only">Abrir carrito</span>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="21" r="1"></circle>
+              <circle cx="19" cy="21" r="1"></circle>
+              <path d="M2.05 2.05h2l2.66 12.38a2 2 0 0 0 2 1.62h9.72a2 2 0 0 0 2-1.62L23 6H6"></path>
+            </svg>
+          </button>
+          <span class="badge" aria-label="2 productos en el carrito">2</span>
+          <a class="btn btn-outline" href="./login.html">Entrar</a>
+          <a class="btn btn-primary" href="./registro.html">Unirse</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero__grid">
+          <div class="stack">
+            <h1 class="hero__title">
+              Alimentos <em>reales</em> de manos locales.
+            </h1>
+            <p class="hero__subtitle">
+              Conectamos a pequeños productores con personas que buscan frescura, calidad y un impacto positivo en su comunidad.
+            </p>
+            <div class="row" style="gap: 14px; flex-wrap: wrap;">
+              <a class="btn btn-primary" href="./catalogo.html">Empezar a comprar</a>
+              <a class="btn btn-outline" href="./registro.html">Soy productor</a>
+            </div>
+          </div>
+
+          <div class="hero__media">
+            <div class="hero__frame">
+              <div class="hero__gif">
+                <img src="./assets/images/delhuerto.gif" alt="DelHuerto Animación" loading="eager" />
+              </div>
+            </div>
+            <div class="hero__badge">
+              <div class="row">
+                <div class="hero__badgeDot">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 6 9 17l-5-5"></path>
+                  </svg>
+                </div>
+                <strong>100% Orgánico</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="row-between" style="align-items: flex-end;">
+            <div class="stack" style="gap: 8px;">
+              <h2 class="section-title">Cosecha del día</h2>
+              <p class="muted" style="margin: 0;">Productos frescos que acaban de llegar de la huerta.</p>
+            </div>
+            <a href="./catalogo.html" class="row" style="font-weight: 900; color: var(--brand-leaf);">
+              Ver todo el mercado
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </a>
+          </div>
+
+          <div class="spacer"></div>
+
+          <div class="product-grid" aria-label="Productos destacados">
+            <article class="product-card">
+              <div class="product-card__media">
+                <img src="https://picsum.photos/seed/delh-tomates/800/800" alt="Tomates Cherry" loading="lazy" referrerpolicy="no-referrer" />
+                <div class="product-card__price">$12.00</div>
+              </div>
+              <div class="product-card__body">
+                <div class="tag">Verduras</div>
+                <h3 class="product-card__title">Tomates Cherry</h3>
+                <div class="product-card__meta">
+                  <span>Stock: 18 kg</span>
+                  <span>Nuevo</span>
+                </div>
+                <a class="product-card__producer" href="./productor.html">
+                  <img src="https://api.dicebear.com/7.x/notionists/svg?seed=huerta-luz" alt="Huerta Doña Luz" />
+                  Huerta Doña Luz
+                </a>
+                <a class="btn btn-primary" href="./producto.html" style="width: 100%;">Comprar / Simular</a>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="product-card__media">
+                <img src="https://picsum.photos/seed/delh-papa/800/800" alt="Papa Criolla" loading="lazy" referrerpolicy="no-referrer" />
+                <div class="product-card__price">$7.50</div>
+              </div>
+              <div class="product-card__body">
+                <div class="tag">Granos</div>
+                <h3 class="product-card__title">Papa Criolla</h3>
+                <div class="product-card__meta">
+                  <span>Stock: 40 kg</span>
+                  <span>Top</span>
+                </div>
+                <a class="product-card__producer" href="./productor.html">
+                  <img src="https://api.dicebear.com/7.x/notionists/svg?seed=familia-c" alt="Familia C." />
+                  Familia C.
+                </a>
+                <a class="btn btn-primary" href="./producto.html" style="width: 100%;">Comprar / Simular</a>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="product-card__media">
+                <img src="https://picsum.photos/seed/delh-fresa/800/800" alt="Fresas" loading="lazy" referrerpolicy="no-referrer" />
+                <div class="product-card__price">$15.00</div>
+              </div>
+              <div class="product-card__body">
+                <div class="tag">Frutas</div>
+                <h3 class="product-card__title">Fresas</h3>
+                <div class="product-card__meta">
+                  <span>Stock: 12 kg</span>
+                  <span>Temporada</span>
+                </div>
+                <a class="product-card__producer" href="./productor.html">
+                  <img src="https://api.dicebear.com/7.x/notionists/svg?seed=huerta-norte" alt="Huerta del Norte" />
+                  Huerta del Norte
+                </a>
+                <a class="btn btn-primary" href="./producto.html" style="width: 100%;">Comprar / Simular</a>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="product-card__media">
+                <img src="https://picsum.photos/seed/delh-huevos/800/800" alt="Huevos de campo" loading="lazy" referrerpolicy="no-referrer" />
+                <div class="product-card__price">$9.90</div>
+              </div>
+              <div class="product-card__body">
+                <div class="tag">Otros</div>
+                <h3 class="product-card__title">Huevos de campo</h3>
+                <div class="product-card__meta">
+                  <span>Stock: 30 uds</span>
+                  <span>Local</span>
+                </div>
+                <a class="product-card__producer" href="./productor.html">
+                  <img src="https://api.dicebear.com/7.x/notionists/svg?seed=granja-ana" alt="Granja Ana" />
+                  Granja Ana
+                </a>
+                <a class="btn btn-primary" href="./producto.html" style="width: 100%;">Comprar / Simular</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="ods">
+        <div class="container" style="text-align: center;">
+          <h2 class="section-title">Nuestra Misión</h2>
+          <p class="muted" style="margin: 12px auto 0; max-width: 700px;">
+            Trabajamos bajo los Objetivos de Desarrollo Sostenible para transformar la forma en que consumimos.
+          </p>
+          <div class="spacer"></div>
+          <div class="row" style="justify-content: center; gap: 26px; flex-wrap: wrap;">
+            <div class="ods-circle">
+              <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 4h20"></path><path d="M6 4v16"></path><path d="M18 4v16"></path><path d="M10 8h8"></path><path d="M10 12h8"></path><path d="M10 16h8"></path>
+              </svg>
+              Soberanía<br />Alimentaria
+            </div>
+            <div class="ods-circle">
+              <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              Sostenibilidad<br />Ambiental
+            </div>
+            <div class="ods-circle">
+              <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              Reducción de<br />Desigualdades
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div style="text-align: center; max-width: 760px; margin: 0 auto;">
+            <h2 class="section-title">¿Cómo funciona?</h2>
+            <p class="muted" style="margin: 12px 0 0;">
+              Tres simples pasos para transformar tu alimentación y apoyar al campo local.
+            </p>
+          </div>
+          <div class="spacer"></div>
+
+          <div class="grid grid-3 steps">
+            <div class="sketch-card step-card">
+              <div class="step-badge">01</div>
+              <div class="stack" style="align-items: center; text-align: center;">
+                <div class="pill" style="background: var(--stone-100); border: 2px solid rgba(41,37,36,0.12);">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-leaf)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path>
+                  </svg>
+                  Explora
+                </div>
+                <h3 class="font-serif" style="margin: 0; font-size: 26px; font-weight: 900;">Explora</h3>
+                <p class="muted" style="margin: 0; line-height: 1.7;">
+                  Descubre productos frescos cultivados cerca de ti por productores locales.
+                </p>
+              </div>
+            </div>
+
+            <div class="sketch-card step-card">
+              <div class="step-badge">02</div>
+              <div class="stack" style="align-items: center; text-align: center;">
+                <div class="pill" style="background: var(--stone-100); border: 2px solid rgba(41,37,36,0.12);">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-leaf)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.38a2 2 0 0 0 2 1.62h9.72a2 2 0 0 0 2-1.62L23 6H6"></path>
+                  </svg>
+                  Pide
+                </div>
+                <h3 class="font-serif" style="margin: 0; font-size: 26px; font-weight: 900;">Pide</h3>
+                <p class="muted" style="margin: 0; line-height: 1.7;">
+                  Añade lo que necesites a tu carrito y confirma tu pedido directamente.
+                </p>
+              </div>
+            </div>
+
+            <div class="sketch-card step-card">
+              <div class="step-badge">03</div>
+              <div class="stack" style="align-items: center; text-align: center;">
+                <div class="pill" style="background: var(--stone-100); border: 2px solid rgba(41,37,36,0.12);">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-leaf)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                  Recibe
+                </div>
+                <h3 class="font-serif" style="margin: 0; font-size: 26px; font-weight: 900;">Recibe</h3>
+                <p class="muted" style="margin: 0; line-height: 1.7;">
+                  Coordina la entrega y paga directamente al productor al recibir tus productos.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="spacer"></div>
+
+          <div class="stats">
+            <div class="sketch-card stat">
+              <p class="stat__value">+120</p>
+              <p class="stat__label">Productores locales</p>
+            </div>
+            <div class="sketch-card stat">
+              <p class="stat__value">+3K</p>
+              <p class="stat__label">Alimentos frescos</p>
+            </div>
+            <div class="sketch-card stat">
+              <p class="stat__value">+500</p>
+              <p class="stat__label">Familias felices</p>
+            </div>
+            <div class="sketch-card stat">
+              <p class="stat__value">30%</p>
+              <p class="stat__label">Emisiones reducidas</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="testimonials">
+        <div class="container">
+          <div style="text-align: center; max-width: 760px; margin: 0 auto;">
+            <h2 class="section-title">Lo que dicen en la comunidad</h2>
+            <p class="muted" style="margin: 12px 0 0; font-size: 18px;">
+              Nuestra plataforma no sólo reparte vegetales, reparte confianza y calidad de vida. Conoce las historias de nuestra gente.
+            </p>
+          </div>
+          <div class="spacer"></div>
+          <div class="grid grid-3">
+            <article class="sketch-card quote">
+              <div class="quote__mark">"</div>
+              <div class="quote__text">
+                Desde que uso DelHuerto, mi familia come mejor y sé exactamente de dónde viene cada fruta. El sabor de los tomates de Doña Luz es inigualable, un verdadero regreso a lo natural.
+              </div>
+              <div class="quote__who">
+                <img src="https://picsum.photos/seed/10/100/100" alt="Elena R." loading="lazy" referrerpolicy="no-referrer" />
+                <div>
+                  <strong>Elena R.</strong><br />
+                  <span class="muted">Consumidora Consciente</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="sketch-card quote" style="transform: translateY(-10px);">
+              <div class="quote__mark">"</div>
+              <div class="quote__text">
+                Como dueño de un pequeño restaurante, buscar ingredientes frescos dictaba mi horario. Ahora recibo lo mejor directo de la tierra. Recomiendo increíblemente la plataforma.
+              </div>
+              <div class="quote__who">
+                <img src="https://picsum.photos/seed/14/100/100" alt="Carlos M." loading="lazy" referrerpolicy="no-referrer" />
+                <div>
+                  <strong>Carlos M.</strong><br />
+                  <span class="muted">Chef Local</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="sketch-card quote">
+              <div class="quote__mark">"</div>
+              <div class="quote__text">
+                Llevamos tres generaciones cultivando. Antes nos compraban muy barato los revendedores. DelHuerto conectó nuestro trabajo con familias que lo aprecian pagando el valor justo.
+              </div>
+              <div class="quote__who">
+                <img src="https://picsum.photos/seed/30/100/100" alt="Familia C." loading="lazy" referrerpolicy="no-referrer" />
+                <div>
+                  <strong>Familia C.</strong><br />
+                  <span class="muted">Productores de Papa</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta">
+        <div class="container cta__grid">
+          <div class="stack" style="gap: 16px;">
+            <span class="cta__label">Únete hoy mismo</span>
+            <h2 class="cta__title">
+              Siembra tu futuro,<br />
+              <span style="font-style: italic; font-weight: 500;">cosecha el cambio.</span>
+            </h2>
+            <p class="cta__subtitle">
+              Llega a más clientes, gestiona tus pedidos fácilmente o empieza a alimentarte mejor hoy. Nuestra red te está esperando.
+            </p>
+            <div class="row" style="flex-wrap: wrap; gap: 14px;">
+              <a class="btn btn-primary" href="./catalogo.html" style="background: var(--brand-leaf);">Ver el Mercado</a>
+              <a class="btn btn-outline" href="./registro.html" style="color: var(--white); border-color: var(--white);">Ver Catálogo</a>
+            </div>
+          </div>
+
+          <div class="cta__photos">
+            <div class="photo-card" style="background: rgba(182,199,168,0.35); transform: rotate(2deg); border-color: var(--white);">
+              <img src="./assets/images/farmer.png" alt="Productor" />
+            </div>
+            <div class="photo-card" style="background: var(--white); transform: rotate(-2deg); border-color: var(--stone-800); margin-top: 22px;">
+              <img src="./assets/images/family.png" alt="Familia" />
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__grid">
+          <div class="stack" style="gap: 14px;">
+            <img class="footer__logo" src="./assets/images/logo.png" alt="DelHuerto" />
+            <p class="footer__muted" style="margin: 0; line-height: 1.7;">
+              Transformando el comercio local a través de la tecnología y la confianza. Del campo a tu mesa, sin intermediarios.
+            </p>
+          </div>
+          <div>
+            <strong>Plataforma</strong>
+            <div class="spacer"></div>
+            <div class="stack" style="gap: 10px;">
+              <a class="footer__muted" href="./">Inicio</a>
+              <a class="footer__muted" href="./catalogo.html">Mercado</a>
+              <a class="footer__muted" href="./registro.html">Registrarse</a>
+            </div>
+          </div>
+          <div>
+            <strong>Comunidad</strong>
+            <div class="spacer"></div>
+            <div class="stack" style="gap: 10px;">
+              <a class="footer__muted" href="#">Productores</a>
+              <a class="footer__muted" href="#">Historias</a>
+              <a class="footer__muted" href="#">ODS</a>
+            </div>
+          </div>
+          <div>
+            <strong>Contacto</strong>
+            <div class="spacer"></div>
+            <div class="stack" style="gap: 10px;">
+              <span class="footer__muted">hola@delhuerto.com</span>
+              <span class="footer__muted">+57 300 123 4567</span>
+              <span class="footer__muted">Bogotá, Colombia</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer__bottom">
+          <span>© 2026 DelHuerto. Todos los derechos reservados.</span>
+          <div class="row" style="gap: 14px;">
+            <a href="#">Privacidad</a>
+            <a href="#">Términos</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <aside class="cart" data-cart aria-hidden="true">
+      <div class="cart__backdrop" data-close-cart></div>
+      <div class="cart__panel" role="dialog" aria-label="Carrito de compras" aria-modal="true">
+        <div class="cart__header">
+          <strong style="font-size: 20px;">Carrito</strong>
+          <button class="icon-btn" type="button" data-close-cart aria-label="Cerrar carrito">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18"></path><path d="m6 6 12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="cart__body">
+          <div class="cart__item">
+            <div>
+              <strong>Tomates Cherry</strong><br />
+              <span class="muted">$12.00 x 1</span>
+            </div>
+            <strong>$12.00</strong>
+          </div>
+          <div class="cart__item">
+            <div>
+              <strong>Papa Criolla</strong><br />
+              <span class="muted">$7.50 x 2</span>
+            </div>
+            <strong>$15.00</strong>
+          </div>
+        </div>
+        <div class="cart__footer">
+          <div class="row-between" style="margin-bottom: 12px;">
+            <strong>Total</strong>
+            <strong style="font-size: 20px;">$27.00</strong>
+          </div>
+          <a class="btn btn-primary" href="./mis-pedidos.html" style="width: 100%;">Confirmar Pedido</a>
+        </div>
+      </div>
+    </aside>
+  </body>
+</html>

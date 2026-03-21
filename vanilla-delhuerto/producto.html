@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <title>DelHuerto - Producto</title>
+    <link rel="stylesheet" href="./css/tokens.css" />
+    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/layout.css" />
+    <link rel="stylesheet" href="./css/components.css" />
+    <link rel="stylesheet" href="./css/pages/product.css" />
+    <script defer src="./js/main.js"></script>
+  </head>
+  <body>
+    <header class="nav" data-nav>
+      <div class="container nav__inner">
+        <a class="nav__brand" href="./">
+          <img class="nav__logo" src="./assets/images/logo.png" alt="DelHuerto" />
+        </a>
+        <nav class="nav__links" aria-label="Navegación principal">
+          <a href="./">Inicio</a>
+          <a href="./catalogo.html">Catálogo</a>
+          <a href="./registro.html">Registrarse</a>
+        </nav>
+        <div class="nav__right">
+          <button class="icon-btn" type="button" data-open-cart aria-label="Abrir carrito">
+            <span class="sr-only">Abrir carrito</span>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="21" r="1"></circle>
+              <circle cx="19" cy="21" r="1"></circle>
+              <path d="M2.05 2.05h2l2.66 12.38a2 2 0 0 0 2 1.62h9.72a2 2 0 0 0 2-1.62L23 6H6"></path>
+            </svg>
+          </button>
+          <span class="badge" aria-label="2 productos en el carrito">2</span>
+          <a class="btn btn-outline" href="./login.html">Entrar</a>
+          <a class="btn btn-primary" href="./registro.html">Unirse</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="product">
+      <div class="container product__grid">
+        <div class="product__media">
+          <img src="https://picsum.photos/seed/delh-tomates/1200/1200" alt="Tomates Cherry" referrerpolicy="no-referrer" />
+          <div class="product__chip">
+            <span class="dot"></span>
+            Disponible
+          </div>
+        </div>
+
+        <div class="stack" style="gap: 18px;">
+          <div class="tag">Verduras</div>
+          <h1 class="product__title">Tomates Cherry</h1>
+          <p class="product__price"><strong>$12.00</strong> <span class="muted">/ kg</span></p>
+          <p class="product__desc font-serif">
+            Tomate dulce y fresco, ideal para ensaladas. Cosechado el mismo día y cultivado sin químicos. (Contenido simulado)
+          </p>
+          <div class="sketch-border" style="border-style: dashed; padding-top: 18px;"></div>
+          <a class="btn btn-primary" href="./mis-pedidos.html" style="width: min(420px, 100%);">Añadir al carrito (simulado)</a>
+
+          <div class="spacer"></div>
+
+          <a class="sketch-card producer-card" href="./productor.html" style="box-shadow: var(--shadow-sketch-soft);">
+            <div class="producer-card__img">
+              <img src="https://api.dicebear.com/7.x/notionists/svg?seed=huerta-luz" alt="Huerta Doña Luz" />
+            </div>
+            <div>
+              <div class="font-serif" style="font-weight: 900; font-size: 22px;">Conoce a quién lo cultiva</div>
+              <div class="producer-card__name">Huerta Doña Luz</div>
+              <div class="producer-card__loc">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                Bogotá, Colombia
+              </div>
+              <div style="margin-top: 6px; color: var(--brand-leaf); font-weight: 900; text-decoration: underline; text-underline-offset: 4px;">Ver perfil completo.</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <aside class="cart" data-cart aria-hidden="true">
+      <div class="cart__backdrop" data-close-cart></div>
+      <div class="cart__panel" role="dialog" aria-label="Carrito de compras" aria-modal="true">
+        <div class="cart__header">
+          <strong style="font-size: 20px;">Carrito</strong>
+          <button class="icon-btn" type="button" data-close-cart aria-label="Cerrar carrito">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18"></path><path d="m6 6 12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="cart__body">
+          <div class="cart__item">
+            <div>
+              <strong>Tomates Cherry</strong><br />
+              <span class="muted">$12.00 x 1</span>
+            </div>
+            <strong>$12.00</strong>
+          </div>
+          <div class="cart__item">
+            <div>
+              <strong>Papa Criolla</strong><br />
+              <span class="muted">$7.50 x 2</span>
+            </div>
+            <strong>$15.00</strong>
+          </div>
+        </div>
+        <div class="cart__footer">
+          <div class="row-between" style="margin-bottom: 12px;">
+            <strong>Total</strong>
+            <strong style="font-size: 20px;">$27.00</strong>
+          </div>
+          <a class="btn btn-primary" href="./mis-pedidos.html" style="width: 100%;">Confirmar Pedido</a>
+        </div>
+      </div>
+    </aside>
+  </body>
+</html>

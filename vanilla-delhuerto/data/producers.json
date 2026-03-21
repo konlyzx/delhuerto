@@ -1,0 +1,30 @@
+[
+  {
+    "id": "huerta-luz",
+    "name": "Huerta Doña Luz",
+    "location": "Bogotá, Colombia",
+    "about": "Cultivamos con amor y respeto por la tierra. Productos orgánicos, frescos y de temporada.",
+    "image_url": "https://api.dicebear.com/7.x/notionists/svg?seed=huerta-luz"
+  },
+  {
+    "id": "huerta-norte",
+    "name": "Huerta del Norte",
+    "location": "Zipaquirá, Colombia",
+    "about": "Cosecha local con prácticas regenerativas y manejo responsable del agua.",
+    "image_url": "https://api.dicebear.com/7.x/notionists/svg?seed=huerta-norte"
+  },
+  {
+    "id": "granja-ana",
+    "name": "Granja Ana",
+    "location": "Sopó, Colombia",
+    "about": "Huevos y productos de granja con trazabilidad y bienestar animal.",
+    "image_url": "https://api.dicebear.com/7.x/notionists/svg?seed=granja-ana"
+  },
+  {
+    "id": "familia-c",
+    "name": "Familia C.",
+    "location": "Boyacá, Colombia",
+    "about": "Pequeños productores, grandes sabores. Cultivo tradicional y comercio justo.",
+    "image_url": "https://api.dicebear.com/7.x/notionists/svg?seed=familia-c"
+  }
+]

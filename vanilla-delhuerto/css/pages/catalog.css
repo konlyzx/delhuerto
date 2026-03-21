@@ -1,0 +1,31 @@
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 25px;
+  align-items: start;
+}
+
+.catalog-products {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.catalog-aside {
+  box-shadow: var(--shadow-sketch-soft);
+}
+
+@media (min-width: 900px) {
+  .catalog-layout {
+    grid-template-columns: 360px 1fr;
+  }
+  .catalog-products {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .catalog-layout {
+    grid-template-columns: 380px 1fr;
+  }
+}

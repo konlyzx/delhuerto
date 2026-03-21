@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <title>DelHuerto - Productor</title>
+    <link rel="stylesheet" href="./css/tokens.css" />
+    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/layout.css" />
+    <link rel="stylesheet" href="./css/components.css" />
+    <link rel="stylesheet" href="./css/pages/landing.css" />
+    <link rel="stylesheet" href="./css/pages/producer.css" />
+    <script defer src="./js/main.js"></script>
+  </head>
+  <body>
+    <header class="nav" data-nav>
+      <div class="container nav__inner">
+        <a class="nav__brand" href="./">
+          <img class="nav__logo" src="./assets/images/logo.png" alt="DelHuerto" />
+        </a>
+        <nav class="nav__links" aria-label="Navegación principal">
+          <a href="./">Inicio</a>
+          <a href="./catalogo.html">Catálogo</a>
+          <a href="./registro.html">Registrarse</a>
+        </nav>
+        <div class="nav__right">
+          <button class="icon-btn" type="button" data-open-cart aria-label="Abrir carrito">
+            <span class="sr-only">Abrir carrito</span>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="21" r="1"></circle>
+              <circle cx="19" cy="21" r="1"></circle>
+              <path d="M2.05 2.05h2l2.66 12.38a2 2 0 0 0 2 1.62h9.72a2 2 0 0 0 2-1.62L23 6H6"></path>
+            </svg>
+          </button>
+          <span class="badge" aria-label="2 productos en el carrito">2</span>
+          <a class="btn btn-outline" href="./login.html">Entrar</a>
+          <a class="btn btn-primary" href="./registro.html">Unirse</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="producer-hero">
+        <div class="container">
+          <a class="row muted" href="./catalogo.html" style="font-weight: 900; gap: 8px; margin-bottom: 16px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m15 18-6-6 6-6"></path>
+            </svg>
+            Volver al catálogo
+          </a>
+
+          <div class="producer-banner">
+            <div class="producer-banner__grid">
+              <div class="producer-avatar">
+                <img src="https://api.dicebear.com/7.x/notionists/svg?seed=huerta-luz" alt="Huerta Doña Luz" />
+              </div>
+              <div class="stack" style="gap: 12px;">
+                <div>
+                  <h1 class="producer-title">Huerta Doña Luz</h1>
+                  <div class="producer-location">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    Bogotá, Colombia
+                  </div>
+                </div>
+                <p class="producer-desc" style="margin: 0;">
+                  Cultivamos con amor y respeto por la tierra. Nuestros productos son 100% orgánicos, asegurando el mejor sabor y nutrición para tu familia, directamente del campo a tu hogar. (Contenido simulado)
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <h2 class="section-title">Nuestra Cosecha</h2>
+          <p class="muted" style="margin: 10px 0 0;">Productos disponibles del productor.</p>
+          <div class="spacer"></div>
+
+          <div class="product-grid" data-producer-products style="grid-template-columns: repeat(4, 1fr);"></div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="cart" data-cart aria-hidden="true">
+      <div class="cart__backdrop" data-close-cart></div>
+      <div class="cart__panel" role="dialog" aria-label="Carrito de compras" aria-modal="true">
+        <div class="cart__header">
+          <strong style="font-size: 20px;">Carrito</strong>
+          <button class="icon-btn" type="button" data-close-cart aria-label="Cerrar carrito">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18"></path><path d="m6 6 12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="cart__body">
+          <div class="cart__item">
+            <div>
+              <strong>Tomates Cherry</strong><br />
+              <span class="muted">$12.00 x 1</span>
+            </div>
+            <strong>$12.00</strong>
+          </div>
+          <div class="cart__item">
+            <div>
+              <strong>Papa Criolla</strong><br />
+              <span class="muted">$7.50 x 2</span>
+            </div>
+            <strong>$15.00</strong>
+          </div>
+        </div>
+        <div class="cart__footer">
+          <div class="row-between" style="margin-bottom: 12px;">
+            <strong>Total</strong>
+            <strong style="font-size: 20px;">$27.00</strong>
+          </div>
+          <a class="btn btn-primary" href="./mis-pedidos.html" style="width: 100%;">Confirmar Pedido</a>
+        </div>
+      </div>
+    </aside>
+  </body>
+</html>

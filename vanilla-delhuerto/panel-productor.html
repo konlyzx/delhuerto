@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <title>DelHuerto - Mi Huerto</title>
+    <link rel="stylesheet" href="./css/tokens.css" />
+    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/layout.css" />
+    <link rel="stylesheet" href="./css/components.css" />
+    <link rel="stylesheet" href="./css/pages/forms.css" />
+    <link rel="stylesheet" href="./css/pages/dashboard.css" />
+    <script defer src="./js/main.js"></script>
+  </head>
+  <body>
+    <header class="nav" data-nav>
+      <div class="container nav__inner">
+        <a class="nav__brand" href="./">
+          <img class="nav__logo" src="./assets/images/logo.png" alt="DelHuerto" />
+        </a>
+        <nav class="nav__links" aria-label="Navegación principal">
+          <a href="./">Inicio</a>
+          <a href="./catalogo.html">Catálogo</a>
+          <a href="./mis-pedidos.html">Mis pedidos</a>
+        </nav>
+        <div class="nav__right">
+          <button class="icon-btn" type="button" data-open-cart aria-label="Abrir carrito">
+            <span class="sr-only">Abrir carrito</span>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="21" r="1"></circle>
+              <circle cx="19" cy="21" r="1"></circle>
+              <path d="M2.05 2.05h2l2.66 12.38a2 2 0 0 0 2 1.62h9.72a2 2 0 0 0 2-1.62L23 6H6"></path>
+            </svg>
+          </button>
+          <span class="badge" aria-label="2 productos en el carrito">2</span>
+          <a class="btn btn-outline" href="./">Salir</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="dash">
+      <div class="container">
+        <div class="dash-grid">
+          <aside class="sketch-card dash-aside">
+            <div class="row" style="gap: 14px;">
+              <div style="width: 64px; height: 64px; border-radius: 999px; overflow: hidden; border: 2px solid var(--stone-800); background: var(--white);">
+                <img src="https://api.dicebear.com/7.x/notionists/svg?seed=huerta-luz" alt="Huerta Doña Luz" />
+              </div>
+              <div>
+                <div style="font-weight: 900; font-size: 20px;">Huerta Doña Luz</div>
+                <div class="tag">Bogotá • Productor</div>
+              </div>
+            </div>
+            <div class="spacer"></div>
+            <nav class="dash-nav stack" aria-label="Secciones del panel" style="gap: 10px;">
+              <a href="#inventario" aria-current="page">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+                  <path d="m3.3 7 8.7 5 8.7-5"></path>
+                  <path d="M12 22V12"></path>
+                </svg>
+                Mis Productos
+              </a>
+              <a href="#perfil">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                Editar Perfil
+              </a>
+              <a href="#resumen">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 3v18h18"></path>
+                  <path d="M18 17V9"></path>
+                  <path d="M13 17V5"></path>
+                  <path d="M8 17v-3"></path>
+                </svg>
+                Resumen
+              </a>
+            </nav>
+            <div class="spacer"></div>
+            <a class="btn btn-outline" href="./" style="width: 100%; justify-content: center; border-color: #ef4444; color: #ef4444;">
+              Cerrar Sesión (simulado)
+            </a>
+          </aside>
+
+          <section class="stack" style="gap: 18px;">
+            <div class="sketch-card" id="inventario">
+              <div class="row-between">
+                <div class="stack" style="gap: 6px;">
+                  <h1 class="section-title" style="font-size: 34px;">Gestión de Inventario</h1>
+                  <p class="muted" style="margin: 0;">Administra tus alimentos frescos a la venta. (Simulado)</p>
+                </div>
+                <a class="btn btn-primary" href="#nuevo">Nuevo Producto</a>
+              </div>
+            </div>
+
+            <form class="sketch-card" id="nuevo" action="#" method="post">
+              <h2 class="font-serif" style="margin: 0; font-size: 28px; font-weight: 900;">Detalles del Producto</h2>
+              <div class="spacer"></div>
+              <div class="grid grid-2">
+                <div class="field">
+                  <label class="label" for="pname">Nombre del Alimento</label>
+                  <input class="input" id="pname" name="pname" type="text" value="Tomates Cherry" required />
+                </div>
+                <div class="field">
+                  <label class="label" for="pcat">Categoría</label>
+                  <select class="input" id="pcat" name="pcat">
+                    <option selected>Verduras</option>
+                    <option>Frutas</option>
+                    <option>Granos</option>
+                    <option>Otros</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label class="label" for="pprice">Precio</label>
+                  <input class="input" id="pprice" name="pprice" type="number" step="0.01" value="12.00" required />
+                </div>
+                <div class="field">
+                  <label class="label" for="pstock">Stock</label>
+                  <input class="input" id="pstock" name="pstock" type="number" value="18" required />
+                </div>
+              </div>
+              <div class="spacer"></div>
+              <div class="field">
+                <label class="label" for="pimg">Imagen (URL)</label>
+                <input class="input" id="pimg" name="pimg" type="url" value="https://picsum.photos/seed/delh-tomates/800/800" />
+              </div>
+              <div class="spacer"></div>
+              <div class="field">
+                <label class="label" for="pdesc">Descripción</label>
+                <textarea class="input" id="pdesc" name="pdesc" rows="4">Tomate dulce y fresco, ideal para ensaladas. Cosechado el mismo día. (Simulado)</textarea>
+              </div>
+              <div class="spacer"></div>
+              <button class="btn btn-primary" type="submit" style="width: 100%;">Guardar y Publicar</button>
+            </form>
+
+            <div class="sketch-card">
+              <h2 class="font-serif" style="margin: 0; font-size: 24px; font-weight: 900;">Tus Productos (Catálogo Actual)</h2>
+              <div class="spacer"></div>
+              <div class="stack" data-inventory style="gap: 12px;"></div>
+            </div>
+
+            <form class="sketch-card" id="perfil" action="#" method="post">
+              <h2 class="font-serif" style="margin: 0; font-size: 28px; font-weight: 900;">Perfil de la Huerta</h2>
+              <div class="spacer"></div>
+              <div class="grid grid-2">
+                <div class="field">
+                  <label class="label" for="hname">Nombre del Negocio</label>
+                  <input class="input" id="hname" type="text" value="Huerta Doña Luz" required />
+                </div>
+                <div class="field">
+                  <label class="label" for="hloc">Ubicación</label>
+                  <input class="input" id="hloc" type="text" value="Bogotá, Colombia" required />
+                </div>
+              </div>
+              <div class="spacer"></div>
+              <div class="field">
+                <label class="label" for="hdesc">Historia o Descripción</label>
+                <textarea class="input" id="hdesc" rows="4">Llevamos 3 generaciones cultivando sin químicos. (Simulado)</textarea>
+              </div>
+              <div class="spacer"></div>
+              <button class="btn btn-primary" type="button" style="width: 100%;">Guardar Cambios (simulado)</button>
+            </form>
+
+            <div class="sketch-card" id="resumen">
+              <h2 class="font-serif" style="margin: 0; font-size: 28px; font-weight: 900;">Resumen y Estadísticas</h2>
+              <div class="spacer"></div>
+              <div class="grid grid-2">
+                <div class="sketch-card" style="box-shadow: none; border-style: dashed; background: #fef3c7;">
+                  <div class="tag">Total Productos</div>
+                  <div class="font-serif" data-summary-products style="font-size: 42px; font-weight: 900;">0</div>
+                </div>
+                <div class="sketch-card" style="box-shadow: none; border-style: dashed; background: #dcfce7; border-color: #14532d;">
+                  <div class="tag" style="color: #14532d;">Unidades Totales</div>
+                  <div class="font-serif" data-summary-units style="font-size: 42px; font-weight: 900; color: #14532d;">0</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <aside class="cart" data-cart aria-hidden="true">
+      <div class="cart__backdrop" data-close-cart></div>
+      <div class="cart__panel" role="dialog" aria-label="Carrito de compras" aria-modal="true">
+        <div class="cart__header">
+          <strong style="font-size: 20px;">Carrito</strong>
+          <button class="icon-btn" type="button" data-close-cart aria-label="Cerrar carrito">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18"></path><path d="m6 6 12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="cart__body">
+          <div class="cart__item">
+            <div>
+              <strong>Tomates Cherry</strong><br />
+              <span class="muted">$12.00 x 1</span>
+            </div>
+            <strong>$12.00</strong>
+          </div>
+          <div class="cart__item">
+            <div>
+              <strong>Papa Criolla</strong><br />
+              <span class="muted">$7.50 x 2</span>
+            </div>
+            <strong>$15.00</strong>
+          </div>
+        </div>
+        <div class="cart__footer">
+          <div class="row-between" style="margin-bottom: 12px;">
+            <strong>Total</strong>
+            <strong style="font-size: 20px;">$27.00</strong>
+          </div>
+          <a class="btn btn-primary" href="./mis-pedidos.html" style="width: 100%;">Confirmar Pedido</a>
+        </div>
+      </div>
+    </aside>
+  </body>
+</html>

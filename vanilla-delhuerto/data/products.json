@@ -1,0 +1,93 @@
+[
+  {
+    "id": "p-tomates-cherry",
+    "name": "Tomates Cherry",
+    "category": "Verduras",
+    "price": 12,
+    "unit": "kg",
+    "stock": 18,
+    "producer_id": "huerta-luz",
+    "image_url": "https://picsum.photos/seed/delh-tomates/800/800",
+    "description": "Tomate dulce y fresco, ideal para ensaladas. Cosechado el mismo día y cultivado sin químicos.",
+    "is_active": true,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p-lechuga",
+    "name": "Lechuga fresca",
+    "category": "Verduras",
+    "price": 5.2,
+    "unit": "uds",
+    "stock": 30,
+    "producer_id": "huerta-norte",
+    "image_url": "https://picsum.photos/seed/delh-lechuga/800/800",
+    "description": "Lechuga crujiente y recién cortada. Perfecta para ensaladas y bowls.",
+    "is_active": true,
+    "created_at": "2026-03-02T10:00:00.000Z"
+  },
+  {
+    "id": "p-espinaca",
+    "name": "Espinaca",
+    "category": "Verduras",
+    "price": 6.7,
+    "unit": "kg",
+    "stock": 24,
+    "producer_id": "huerta-luz",
+    "image_url": "https://picsum.photos/seed/delh-espinaca/800/800",
+    "description": "Espinaca tierna, limpia y lista para cocinar. Alta en hierro y sabor.",
+    "is_active": true,
+    "created_at": "2026-03-03T10:00:00.000Z"
+  },
+  {
+    "id": "p-fresas",
+    "name": "Fresas",
+    "category": "Frutas",
+    "price": 15,
+    "unit": "kg",
+    "stock": 12,
+    "producer_id": "huerta-norte",
+    "image_url": "https://picsum.photos/seed/delh-fresa/800/800",
+    "description": "Fresas de temporada, dulces y aromáticas. Ideales para postres o snacks.",
+    "is_active": true,
+    "created_at": "2026-03-04T10:00:00.000Z"
+  },
+  {
+    "id": "p-papa-criolla",
+    "name": "Papa Criolla",
+    "category": "Granos",
+    "price": 7.5,
+    "unit": "kg",
+    "stock": 40,
+    "producer_id": "familia-c",
+    "image_url": "https://picsum.photos/seed/delh-papa/800/800",
+    "description": "Papa criolla seleccionada, perfecta para sopas, guisos o al horno.",
+    "is_active": true,
+    "created_at": "2026-03-05T10:00:00.000Z"
+  },
+  {
+    "id": "p-huevos-campo",
+    "name": "Huevos de campo",
+    "category": "Otros",
+    "price": 9.9,
+    "unit": "uds",
+    "stock": 30,
+    "producer_id": "granja-ana",
+    "image_url": "https://picsum.photos/seed/delh-huevos/800/800",
+    "description": "Huevos de gallina feliz, frescos y con excelente sabor.",
+    "is_active": true,
+    "created_at": "2026-03-06T10:00:00.000Z"
+  },
+  {
+    "id": "p-aromaticas",
+    "name": "Aromáticas",
+    "category": "Otros",
+    "price": 4,
+    "unit": "uds",
+    "stock": 50,
+    "producer_id": "huerta-luz",
+    "image_url": "https://picsum.photos/seed/delh-hierbas/800/800",
+    "description": "Mix de hierbas aromáticas para infusiones o cocina.",
+    "is_active": true,
+    "created_at": "2026-03-07T10:00:00.000Z"
+  }
+]

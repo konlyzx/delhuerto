@@ -1,0 +1,26 @@
+:root {
+  --brand-cream: #f7f2e8;
+  --brand-leaf: #4c7c3e;
+  --brand-olive: #3a5333;
+  --brand-sage: #b6c7a8;
+
+  --stone-900: #1c1917;
+  --stone-800: #292524;
+  --stone-700: #44403c;
+  --stone-600: #57534e;
+  --stone-500: #78716c;
+  --stone-400: #a8a29e;
+  --stone-300: #d6d3d1;
+  --stone-200: #e7e5e4;
+  --stone-100: #f5f5f4;
+  --white: #ffffff;
+
+  --radius-xl: 24px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 10px;
+
+  --shadow-soft: 0 20px 40px rgba(0, 0, 0, 0.1);
+  --shadow-sketch: 8px 8px 0 rgba(41, 37, 36, 1);
+  --shadow-sketch-soft: 4px 4px 0 rgba(41, 37, 36, 0.15);
+}

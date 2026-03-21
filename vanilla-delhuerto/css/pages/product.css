@@ -1,0 +1,122 @@
+.product {
+  padding: 72px 0;
+}
+
+.product__grid {
+  display: grid;
+  gap: 34px;
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+
+.product__media {
+  background: var(--stone-100);
+  border: 2px solid var(--stone-800);
+  border-radius: 28px;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 1 / 1;
+}
+
+.product__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 500ms ease;
+}
+
+.product__media:hover img {
+  transform: scale(1.05);
+}
+
+.product__chip {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--white);
+  border: 2px solid var(--stone-800);
+  border-radius: 999px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: var(--brand-leaf);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 99px;
+  background: var(--brand-leaf);
+}
+
+.product__title {
+  font-family: Fraunces, ui-serif, Georgia, serif;
+  font-size: clamp(40px, 5vw, 74px);
+  margin: 0;
+  line-height: 1.02;
+  font-weight: 900;
+}
+
+.product__price {
+  font-size: 28px;
+  color: var(--stone-700);
+  margin: 0;
+}
+
+.product__desc {
+  color: var(--stone-600);
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.producer-card {
+  cursor: pointer;
+  padding: 18px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  background: var(--white);
+}
+
+.producer-card__img {
+  width: 74px;
+  height: 74px;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 2px solid var(--stone-800);
+  background: rgba(182, 199, 168, 0.25);
+}
+
+.producer-card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.producer-card__name {
+  font-weight: 900;
+  font-size: 18px;
+}
+
+.producer-card__loc {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--stone-500);
+  font-weight: 800;
+  margin-top: 4px;
+}
+
+@media (min-width: 900px) {
+  .product__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .product__media {
+    aspect-ratio: 4 / 5;
+  }
+}
